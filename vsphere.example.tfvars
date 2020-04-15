@@ -1,12 +1,17 @@
-vsphere_user = "your_vsphere_username"
-vsphere_password = "your_vsphere_password"
-vsphere_server = "vsphere.server.example"
-vsphere_datacenter = "data_center_name"
+vsphere_options = {
+  resource_pool_name = "pool_name"
+  datastore_cluster_name = "SANDBOX_TIER4"
+  vsphere_user = "your_vsphere_username"
+  vsphere_password = "your_vsphere_password"
+  vsphere_server = "vsphere.server.example"
+  vsphere_datacenter = "data_center_name"
+}
 
 bootstrap = {
   location = "Sandbox/xhama",
   macAddress = "00:50:56:a5:5b:11"
 }
+
 
 masters = {
   location = "Sandbox/xhama",

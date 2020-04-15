@@ -1,8 +1,5 @@
 // vSphere Variable
-variable "vsphere_server" {}
-variable "vsphere_user" {}
-variable "vsphere_password" {}
-variable "vsphere_datacenter" {}
+variable "vsphere_options" {}
 
 // OCP Variables
 variable "bootstrap" {}
@@ -11,24 +8,24 @@ variable "workers" {}
 variable "ignition_files" {}
 
 provider "vsphere" {
-  vsphere_server = var.vsphere_server
-  user = var.vsphere_user
-  password = var.vsphere_password
+  vsphere_server = var.vsphere_options.vsphere_server
+  user = var.vsphere_options.vsphere_user
+  password = var.vsphere_options.vsphere_password
   allow_unverified_ssl = true
   version = "< 1.16"
 }
 
 data "vsphere_datacenter" "dc" {
-  name = var.vsphere_datacenter
+  name = var.vsphere_options.vsphere_datacenter
 }
 
 data "vsphere_datastore_cluster" "datastore_cluster" {
-  name          = "SANDBOX_TIER4"
+  name          = var.vsphere_options.datastore_cluster_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_resource_pool" "pool" {
-  name          = "xhama"
+  name          = var.vsphere_options.resource_pool_name
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -48,7 +45,6 @@ data "vsphere_virtual_machine" "installer-template" {
 }
 
 resource "vsphere_virtual_machine" "bootstrap" {
-
   name                 = "bootstrap"
   folder               = var.bootstrap.location
 
