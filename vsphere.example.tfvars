@@ -4,10 +4,12 @@ vsphere_server = "vsphere.server.example"
 vsphere_datacenter = "data_center_name"
 
 bootstrap = {
+  location = "Sandbox/xhama",
   macAddress = "00:50:56:a5:5b:11"
 }
 
 masters = {
+  location = "Sandbox/xhama",
   disk = {
     size = 120
   },
@@ -25,6 +27,7 @@ masters = {
 }
 
 workers = {
+  location = "Sandbox/xhama",
   disk = {
     size = 120
   },

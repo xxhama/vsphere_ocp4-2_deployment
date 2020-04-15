@@ -50,7 +50,7 @@ data "vsphere_virtual_machine" "installer-template" {
 resource "vsphere_virtual_machine" "bootstrap" {
 
   name                 = "bootstrap"
-  folder               = "Sandbox/xhama"
+  folder               = var.bootstrap.location
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
@@ -92,7 +92,7 @@ resource "vsphere_virtual_machine" "masters" {
   for_each = var.masters.machines
 
   name                 = each.key
-  folder               = "Sandbox/xhama"
+  folder               = var.masters.location
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
@@ -135,7 +135,7 @@ resource "vsphere_virtual_machine" "workers" {
   for_each = var.workers.machines
 
   name                 = each.key
-  folder               = "Sandbox/xhama"
+  folder               = var.workers.location
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
