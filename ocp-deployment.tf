@@ -3,6 +3,7 @@ variable "vsphere_options" {}
 
 // OCP Variables
 variable "bootstrap" {}
+variable "load-balancers" {}
 variable "masters" {}
 variable "workers" {}
 variable "storage" {}
@@ -16,6 +17,7 @@ provider "vsphere" {
   version = "< 1.16"
 }
 
+// Data objects
 data "vsphere_datacenter" "dc" {
   name = var.vsphere_options.vsphere_datacenter
 }
@@ -36,19 +38,16 @@ data "vsphere_network" "network" {
 }
 
 data "vsphere_virtual_machine" "master-worker-template" {
-  name          = "Templates/CSPLAB-Supported/rhcos-4.3.0-x86_64-vmware-template"
+  name          = "Templates/CSPLAB-Supported/rhcos-4.2.0-x86_64-vmware-template"
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
-data "vsphere_virtual_machine" "installer-template" {
-  name          = "Templates/Contributed/ocp42-installer-template"
-  datacenter_id = data.vsphere_datacenter.dc.id
-}
 
+// Resources to create
 resource "vsphere_virtual_machine" "bootstrap" {
   name                 = "bootstrap"
-  folder               = var.bootstrap.location
 
+  folder               = var.bootstrap.location
   resource_pool_id     = data.vsphere_resource_pool.pool.id
   datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
 

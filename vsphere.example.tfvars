@@ -67,6 +67,15 @@ storage = {
   }
 }
 
+load-balancers = {
+  compute: {
+    macAddress = "00:50:56:a5:8d:5e"
+  }
+  control: {
+    macAddress = "00:50:56:a5:d2:96"
+  }
+}
+
 ignition_files = {
   master = "base64_ign",
   worker = "base64_ign",
