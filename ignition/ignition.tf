@@ -88,8 +88,6 @@ resource "null_resource" "generate_manifests" {
   }
 }
 
-# see templates.tf for generation of yaml config files
-
 resource "null_resource" "generate_ignition" {
   depends_on = [
     null_resource.generate_manifests
