@@ -20,7 +20,7 @@ platform:
     datacenter: ${var.datacenter}
     defaultDatastore: ${var.datastore}
 pullSecret: ${var.openshift_pull_secret}
-sshKey: ${var.public_ssh_key}
+sshKey: ${tls_private_key.installkey.public_key_openssh}
 proxy:
     httpProxy: ${var.proxy_host}${var.proxy_port}
     httpsProxy: ${var.proxy_host}${var.proxy_port}

@@ -84,7 +84,7 @@ resource "null_resource" "generate_manifests" {
   ]
 
   provisioner "local-exec" {
-    command = '${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests'
+    command = "${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests"
   }
 }
 
@@ -103,22 +103,17 @@ EOF
   }
 }
 
-
-
-data "ignition_config" "master_ign" {
-  replace {
-    source = file(local.installer_workspace + "/master.ign")
-  }
+data "local_file" "master_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/master.ign"
 }
 
-data "ignition_config" "append_ign" {
-  replace {
-    source = file(local.installer_workspace + "/append.ign")
-  }
+data "local_file" "append_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/append.ign"
 }
 
-data "ignition_config" "worker_ign" {
-  replace {
-    source = file(local.installer_workspace + "/worker.ign")
-  }
+data "local_file" "worker_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/worker.ign"
 }

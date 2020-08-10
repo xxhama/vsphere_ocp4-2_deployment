@@ -10,10 +10,6 @@ variable "openshift_pull_secret" {
   type = string
 }
 
-variable "public_ssh_key" {
-  type = string
-}
-
 variable "openshift_installer_url" {
   type    = string
   default = "https://mirror.openshift.com/pub/openshift-v4/clients/ocp"
@@ -51,6 +47,7 @@ variable "datastore" {
 variable "proxy_host" {
   type = string
 }
+
 variable "proxy_port" {
   type = string
 }
