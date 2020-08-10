@@ -21,22 +21,22 @@ resource "local_file" "write_public_key" {
   filename        = "${path.root}/installer-files/artifacts/openshift_rsa.pub"
   file_permission = 0600
 }
-# Proxy TLS Cert
-resource "null_resource" "download_proxy_cert" {
-  provisioner "local-exec" {
-    when = create
-    command = "echo | openssl s_client -showcerts -connect ${var.proxy_host}:${var.proxy_port} 2>/dev/null | openssl x509 -outform PEM > ca.crt"
-  }
-
-  provisioner "local-exec" {
-    when = destroy
-    command = "rm -rf ${local.installer_workspace}/ca.crt"
-  }
-}
-data "local_file" "proxy_cert" {
-  depends_on = [null_resource.download_proxy_cert]
-  filename = "${local.installer_workspace}/ca.crt"
-}
+//# Proxy TLS Cert
+//resource "null_resource" "download_proxy_cert" {
+//  provisioner "local-exec" {
+//    when = create
+//    command = "echo | openssl s_client -showcerts -connect ${var.proxy_host}:${var.proxy_port} 2>/dev/null | openssl x509 -outform PEM > ca.crt"
+//  }
+//
+//  provisioner "local-exec" {
+//    when = destroy
+//    command = "rm -rf ${local.installer_workspace}/ca.crt"
+//  }
+//}
+//data "local_file" "proxy_cert" {
+//  depends_on = [null_resource.download_proxy_cert]
+//  filename = "${local.installer_workspace}/ca.crt"
+//}
 
 resource "null_resource" "download_binaries" {
   provisioner "local-exec" {
@@ -98,7 +98,6 @@ resource "null_resource" "generate_ignition" {
   provisioner "local-exec" {
     command = <<EOF
 ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create ignition-configs
-mv /tmp/metadata.json ${local.installer_workspace}/metadata.json
 EOF
   }
 }
