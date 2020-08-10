@@ -1,3 +1,5 @@
+provider "vsphere" {}
+
 resource "random_string" "cluster_id" {
   length  = 10
   special = false
@@ -26,6 +28,19 @@ locals {
   cluster_id = var.cluster_name
 }
 
+// Module Infra node
+// Inputs
+// 1. vSphere Cluster
+// 2. DataCenter
+// 3. Resource Pool
+// 4. infra node ip
+// 5. folder
+// 6. proxy server:port
+// 7. vSphere Network
+// 8. DNS?
+// Outputs
+//
+
 module "ignition" {
   source                        = "./ignition"
   base_domain                   = var.base_domain
@@ -41,3 +56,21 @@ module "ignition" {
   cluster_id                    = local.cluster_id
   node_count                    = var.worker_count
 }
+
+// Module config file server for ign
+//
+
+// Module Configure LB
+// Download, Configure, Enable/Start HAProxy
+// Input:
+// 1. Master IPs
+// 2. Worker IPs
+// 3. Bootstrap IP
+
+// Module OCP Cluster
+// Input:
+// 1. master.ign
+// 2. worker.ign
+// 3. append-bootstrap.ign
+
+// Module Complete Check
