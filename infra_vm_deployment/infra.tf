@@ -1,10 +1,9 @@
 resource "vsphere_virtual_machine" "vm" {
-  count = var.vm_disk2_enable == "false" ? 1 : 0
 
   name             = var.vm_name
   folder           = var.vm_folder
-  num_cpus         = var.vm_vcpu
-  memory           = var.vm_memory
+  num_cpus         = "8"
+  memory           = "16384"
   resource_pool_id = data.vsphere_resource_pool.vsphere_resource_pool.id
   datastore_id     = data.vsphere_datastore.vsphere_datastore.id
   guest_id         = data.vsphere_virtual_machine.vm_template.guest_id

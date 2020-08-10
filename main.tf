@@ -41,6 +41,34 @@ locals {
 // Outputs
 //
 
+module "deployVM_infranode" {
+  source = "./infra_vm_deployment"
+  
+  #######
+  vsphere_datacenter                 = var.vsphere_datacenter
+  vsphere_resource_pool              = var.vsphere_resource_pool
+  vm_name                            = var.infranode_hostname
+  vm_template                        = var.infranode_vm_template
+  vm_os_password                     = var.infranode_vm_os_password
+  vm_os_user                         = var.infranode_vm_os_user
+  vm_domain                          = var.vm_domain_name
+  vm_folder                          = var.vm_folder
+  proxy_server                       = var.proxy_server
+  vm_private_ssh_key                 = tls_private_key.generate.private_key_pem 
+  vm_public_ssh_key                  = tls_private_key.generate.public_key_openssh 
+  vm_private_network_interface_label = var.vm_private_network_interface_label
+  vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
+  vm_ipv4_address                    = var.infranode_ip
+  vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
+  vm_private_adapter_type            = var.vm_private_adapter_type
+  vm_disk1_datastore                 = var.infranode_vm_disk1_datastore
+  vm_dns_servers                     = var.vm_dns_servers
+  vm_dns_suffixes                    = var.vm_dns_suffixes
+  vm_clone_timeout                   = var.vm_clone_timeout
+  random                             = random_string.random-dir.result
+
+}
+
 module "ignition" {
   source                        = "./ignition"
   base_domain                   = var.base_domain

@@ -15,11 +15,6 @@ data "vsphere_resource_pool" "vsphere_resource_pool" {
   datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
 }
 
-data "vsphere_network" "vm_private_network" {
-  name          = var.vm_private_network_interface_label
-  datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
-}
-
 data "vsphere_virtual_machine" "vm_template" {
   name          = var.vm_template
   datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
@@ -62,16 +57,6 @@ variable "vsphere_datacenter" {
 }
 
 
-variable "vm_vcpu" {
-  description = "Number of virtual CPU for the virtual machine, which is required to be a positive Integer"
-  default     = "1"
-}
-
-variable "vm_memory" {
-  description = "Memory assigned to the virtual machine in megabytes. This value is required to be an increment of 1024"
-  default     = "1024"
-}
-
 variable "vsphere_resource_pool" {
   description = "Target vSphere Resource Pool to host the virtual machine"
 }
@@ -79,6 +64,11 @@ variable "vsphere_resource_pool" {
 variable "vm_dns_servers" {
   type        = list(string)
   description = "DNS servers for the virtual network adapter"
+}
+
+variable "vm_dns_suffixes" {
+  type        = list(string)
+  description = "Name resolution suffixes for the virtual network adapter"
 }
 
 variable "vm_ipv4_gateway" {
