@@ -2,6 +2,10 @@ variable "base_domain" {
   type = string
 }
 
+variable "public_ssh_key" {
+  type = string
+}
+
 variable "master_count" {
   type = string
 }
