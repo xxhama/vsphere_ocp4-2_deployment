@@ -24,11 +24,6 @@ resource "local_file" "write_public_key" {
 
 locals {
   cluster_id = var.cluster_name
-  tags = merge(
-  {
-    "kubernetes.io_cluster.${local.cluster_id}" = "owned"
-  }
-  )
 }
 
 module "ignition" {
