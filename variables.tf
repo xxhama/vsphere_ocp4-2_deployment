@@ -46,4 +46,59 @@ variable "openshift_pull_secret" {}
 
 variable "worker_count" {}
 
+### vSphere information
 
+variable "vsphere_datacenter" {
+  type = string
+}
+
+variable "vsphere_resource_pool" {
+  type = string
+}
+
+variable "vsphere_cluster" {
+  type = string
+}
+
+variable "vsphere_resource_pool" {
+  type = string
+}
+
+variable "proxy_server" {
+  type        = string
+}
+
+### Infranode information 
+variable "infranode_hostname" {
+  type = string
+}
+
+variable "infranode_ip" {
+  type = string
+}
+
+variable "infranode_vm_template" {
+  type = string
+}
+
+variable "vm_private_ssh_key" {
+}
+
+variable "vm_public_ssh_key" {
+}
+
+variable "infranode_vm_os_user" {
+  type = string
+}
+
+variable "infranode_vm_os_password" {
+  type = string
+}
+
+variable "infranode_vm_ipv4_gateway" {
+  type = string
+}
+
+variable "infranode_vm_ipv4_prefix_length" {
+  type = string
+}
