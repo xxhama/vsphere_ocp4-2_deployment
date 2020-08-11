@@ -64,7 +64,7 @@ variable "vsphere_resource_pool" {
   type = string
 }
 
-variable "proxy_server" {
+variable "proxy_host" {
   type        = string
 }
 
@@ -101,4 +101,18 @@ variable "infranode_vm_ipv4_gateway" {
 
 variable "infranode_vm_ipv4_prefix_length" {
   type = string
+}
+
+variable "bootstrap_ip" {
+  type = string
+}
+
+variable "master_ips" {
+  type    = list(string)
+  default = []
+}
+
+variable "worker_ips" {
+  type    = list(string)
+  default = []
 }

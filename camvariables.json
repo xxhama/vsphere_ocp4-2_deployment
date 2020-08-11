@@ -280,6 +280,42 @@
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "bootstrap_ip",
+        "default":"${openshift_container_platform_info.bootstrap_ip}",
+        "description": "Ip Address for Bootstrap node'",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "Bootstrap IP",
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "master_ips",
+        "label": "Master IPs",
+        "default":"${openshift_container_platform_info.master_ips}",
+        "type": "list",
+        "description": "A list of ip addresses for the master nodes.",
+        "required": true,
+        "secured": false,
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "worker_ips",
+        "default":"${openshift_container_platform_info.worker_ips}",
+        "label": "Worker IPs",
+        "type": "list",
+        "description": "A list of ip addresses for the worker nodes.",
+        "required": true,
+        "secured": false,
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
       }
     ],
     "template_output_params": [
