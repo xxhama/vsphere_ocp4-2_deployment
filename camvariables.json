@@ -20,7 +20,7 @@
       {
         "name": "openshift_infra_node_on_vmware",
         "label": "OpenShift Infrastructure Node Settings"
-      },
+      }
     ],
     "template_input_params": [
       {
