@@ -1,8 +1,25 @@
 locals {
   installer_workspace     = "${path.root}/installer-files"
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
-  cluster_nr              = element(split("-", var.cluster_id), 1)
+  cluster_nr              = element(split("-", var.cluster_name), 1)
 }
+
+//# Proxy TLS Cert
+//resource "null_resource" "download_proxy_cert" {
+//  provisioner "local-exec" {
+//    when = create
+//    command = "echo | openssl s_client -showcerts -connect ${var.proxy_host}:${var.proxy_port} 2>/dev/null | openssl x509 -outform PEM > ca.crt"
+//  }
+//
+//  provisioner "local-exec" {
+//    when = destroy
+//    command = "rm -rf ${local.installer_workspace}/ca.crt"
+//  }
+//}
+//data "local_file" "proxy_cert" {
+//  depends_on = [null_resource.download_proxy_cert]
+//  filename = "${local.installer_workspace}/ca.crt"
+//}
 
 resource "null_resource" "download_binaries" {
   provisioner "local-exec" {
@@ -29,7 +46,6 @@ case $(uname -s) in
 esac
 chmod u+x ${local.installer_workspace}/jq
 rm -f ${local.installer_workspace}/*.tar.gz ${local.installer_workspace}/robots*.txt* ${local.installer_workspace}/README.md
-if [[ "${var.airgapped["enabled"]}" == "true" ]]; then ${local.installer_workspace}/oc adm release extract -a ${path.root}/${var.openshift_pull_secret} --command=openshift-install ${var.airgapped["repository"]}:${var.openshift_version}-x86_64 && mv ${path.root}/openshift-install ${local.installer_workspace};fi
 EOF
   }
 
@@ -51,11 +67,9 @@ resource "null_resource" "generate_manifests" {
   ]
 
   provisioner "local-exec" {
-    command = '${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests'
+    command = "${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests"
   }
 }
-
-# see templates.tf for generation of yaml config files
 
 resource "null_resource" "generate_ignition" {
   depends_on = [
@@ -65,28 +79,21 @@ resource "null_resource" "generate_ignition" {
   provisioner "local-exec" {
     command = <<EOF
 ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create ignition-configs
-${local.installer_workspace}/jq '.infraID="${var.cluster_id}"' ${local.installer_workspace}/metadata.json > /tmp/metadata.json
-mv /tmp/metadata.json ${local.installer_workspace}/metadata.json
 EOF
   }
 }
 
-
-
-data "ignition_config" "master_redirect" {
-  replace {
-    source = file(local.installer_workspace + "/master.ign")
-  }
+data "local_file" "master_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/master.ign"
 }
 
-data "ignition_config" "bootstrap_redirect" {
-  replace {
-    source = "${}"
-  }
+data "local_file" "append_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/append.ign"
 }
 
-data "ignition_config" "worker_redirect" {
-  replace {
-    source = "${}"
-  }
+data "local_file" "worker_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/worker.ign"
 }

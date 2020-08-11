@@ -1,7 +1,11 @@
 output "bootstrap_ignition" {
-  value = data.ignition_config.bootstrap_redirect.rendered
+  value = data.local_file.append_ign.content
 }
 
 output "master_ignition" {
-  value = data.ignition_config.master_redirect.rendered
+  value = data.local_file.master_ign.content
+}
+
+output "worker_ignition" {
+  value = data.local_file.worker_ign.content
 }
