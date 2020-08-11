@@ -54,8 +54,8 @@ module "deployVM_infranode" {
   vm_domain                          = var.vm_domain_name
   vm_folder                          = var.vm_folder
   proxy_server                       = var.proxy_server
-  vm_private_ssh_key                 = tls_private_key.generate.private_key_pem 
-  vm_public_ssh_key                  = tls_private_key.generate.public_key_openssh 
+  vm_private_ssh_key                 = chomp(tls_private_key.nstallkey.private_key_pem)
+  vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
   vm_private_network_interface_label = var.vm_private_network_interface_label
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
