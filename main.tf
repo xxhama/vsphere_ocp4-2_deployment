@@ -75,16 +75,19 @@ module "ignition" {
   openshift_version             = var.openshift_version
   master_count                  = var.master_count
   cluster_name                  = var.cluster_name
-  cluster_network_cidr          = var.openshift_cluster_network_cidr
-  cluster_network_host_prefix   = var.openshift_cluster_network_host_prefix
-  machine_cidr                  = var.machine_v4_cidrs[0]
   service_network_cidr          = var.openshift_service_network_cidr
   openshift_pull_secret         = var.openshift_pull_secret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   cluster_id                    = local.cluster_id
   node_count                    = var.worker_count
+  datacenter                    = var.vsphere_datacenter
+  datastore = ""
+  proxy_host = ""
+  proxy_port = ""
+  vcenter_url = ""
+  vsphere_password = ""
+  vsphere_user = ""
 }
-
 // Module config file server for ign
 //
 
