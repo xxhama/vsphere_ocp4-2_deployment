@@ -37,10 +37,9 @@ resource "local_file" "write_public_key" {
   file_permission = 0600
 }
 
-resource "null_resource" "create-temp-random-dir" {
-  provisioner "local-exec" {
-    command = format("mkdir -p  /tmp/%s", random_string.random-dir.result)
-  }
+resource "random_string" "random-dir" {
+  length  = 8
+  special = false
 }
 
 // Module Infra node
