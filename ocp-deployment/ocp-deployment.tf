@@ -40,10 +40,10 @@ resource "vsphere_virtual_machine" "bootstrap" {
 }
 
 resource "vsphere_virtual_machine" "masters" {
-  for_each = var.masters.machines
+  for_each = var.masters.ips
   depends_on = [vsphere_virtual_machine.bootstrap]
 
-  name                 = each.key
+  name                 = "master-${each.key}"
   folder               = var.masters.location
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -59,8 +59,7 @@ resource "vsphere_virtual_machine" "masters" {
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
-    mac_address       = each.value["macAddress"]
-    use_static_mac    = true
+    ipv4_address      = each.value
   }
 
   disk {

@@ -60,10 +60,6 @@ variable "vsphere_cluster" {
   type = string
 }
 
-variable "vsphere_resource_pool" {
-  type = string
-}
-
 variable "proxy_host" {
   type        = string
 }
@@ -109,10 +105,12 @@ variable "bootstrap_ip" {
 
 variable "master_ips" {
   type    = list(string)
-  default = []
 }
 
 variable "worker_ips" {
   type    = list(string)
-  default = []
+}
+
+variable "vm_folder" {
+  type = string
 }

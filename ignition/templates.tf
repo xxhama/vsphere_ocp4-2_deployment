@@ -22,8 +22,8 @@ platform:
 pullSecret: '${var.openshift_pull_secret}'
 sshKey: ${var.public_ssh_key}
 proxy:
-    httpProxy: http://${var.proxy_host}:${var.proxy_port}
-    httpsProxy: https://${var.proxy_host}:${var.proxy_port}
+    httpProxy: http://${var.proxy_host}
+    httpsProxy: https://${var.proxy_host}
 EOF
 }
 

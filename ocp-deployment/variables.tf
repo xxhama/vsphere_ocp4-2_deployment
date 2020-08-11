@@ -2,10 +2,9 @@
 variable "vsphere_options" {}
 
 // OCP Variables
-variable "bootstrap" {}
-variable "load-balancers" {}
-variable "masters" {}
-variable "workers" {}
+variable "bootstrap_ip" {}
+variable "master_ips" {}
+variable "worker_ips" {}
 variable "storage" {}
 variable "ignition_files" {}
 
@@ -42,6 +41,7 @@ data "vsphere_virtual_machine" "master-worker-template" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
+// Example Data
 vsphere_options = {
   resource_pool_name = "resource_pool_name",
   datastore_cluster_name = "datastore_cluster_name",

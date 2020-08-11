@@ -110,6 +110,18 @@ module "ignition" {
 // 1. master.ign
 // 2. worker.ign
 // 3. append-bootstrap.ign
+module "ocp-deployment" {
+  source = "./ocp-deployment"
+  master_ign            = module.ignition.master_ignition
+  worker_ign            = module.ignition.worker_ignition
+  append_ign            = module.ignition.bootstrap_ignition
+  masters_count         = var.master_count
+  workers_count         = var.worker_count
+  bootstrap_ip          = var.bootstrap_ip
+  master_ips            = var.master_ips
+  workers_ips           = var.worker_ips
+  location              = var.
+}
 
 // Module Complete Check
 

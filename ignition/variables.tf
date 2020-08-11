@@ -51,7 +51,3 @@ variable "datastore" {
 variable "proxy_host" {
   type = string
 }
-
-variable "proxy_port" {
-  type = string
-}
