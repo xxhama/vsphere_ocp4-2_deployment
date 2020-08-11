@@ -37,6 +37,12 @@ resource "local_file" "write_public_key" {
   file_permission = 0600
 }
 
+resource "null_resource" "create-temp-random-dir" {
+  provisioner "local-exec" {
+    command = format("mkdir -p  /tmp/%s", random_string.random-dir.result)
+  }
+}
+
 // Module Infra node
 // Inputs
 // 1. vSphere Cluster
@@ -63,7 +69,7 @@ module "deployVM_infranode" {
   vm_domain                          = var.vm_domain_name
   vm_folder                          = var.vm_folder
   proxy_server                       = var.proxy_host
-  vm_private_ssh_key                 = chomp(tls_private_key.nstallkey.private_key_pem)
+  vm_private_ssh_key                 = chomp(tls_private_key.installkey.private_key_pem)
   vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
