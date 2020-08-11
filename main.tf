@@ -11,7 +11,7 @@ data "external" "get_vcenter_details" {
 }
 
 locals {
-  cluster_id = var.cluster_name
+  cluster_id      = var.cluster_name
   vcenter         = data.external.get_vcenter_details.result["vcenter"]
   vcenteruser     = data.external.get_vcenter_details.result["vcenteruser"]
   vcenterpassword = data.external.get_vcenter_details.result["vcenterpassword"]
@@ -132,8 +132,8 @@ module "ocp-deployment" {
 
 module "haproxy" {
   source                        = "./config_lb_server"
-  vm_os_user                    = var.vm_os_user
-  vm_os_password                = var.vm_os_password
-  vm_os_private_key             = var.vm_os_private_key
-  vm_ipv4_address               = var.vm_ipv4_address
+  vm_os_user                    = var.infranode_vm_os_user
+  vm_os_password                = var.infranode_vm_os_password
+  vm_os_private_key             = var.infranode_vm_os_private_key
+  vm_ipv4_address               = var.infranode_ip
 }
