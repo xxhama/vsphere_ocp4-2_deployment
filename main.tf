@@ -6,9 +6,18 @@ resource "random_string" "cluster_id" {
   upper   = false
 }
 
+data "external" "get_vcenter_details" {
+  program = ["/bin/bash", "./scripts/get_vcenter_details.sh"]
+}
+
 locals {
   cluster_id = var.cluster_name
+  vcenter         = data.external.get_vcenter_details.result["vcenter"]
+  vcenteruser     = data.external.get_vcenter_details.result["vcenteruser"]
+  vcenterpassword = data.external.get_vcenter_details.result["vcenterpassword"]
 }
+
+
 
 # SSH Key for VMs
 resource "tls_private_key" "installkey" {
@@ -53,10 +62,9 @@ module "deployVM_infranode" {
   vm_os_user                         = var.infranode_vm_os_user
   vm_domain                          = var.vm_domain_name
   vm_folder                          = var.vm_folder
-  proxy_server                       = var.proxy_server
+  proxy_server                       = var.proxy_host
   vm_private_ssh_key                 = chomp(tls_private_key.nstallkey.private_key_pem)
   vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
-  vm_private_network_interface_label = var.vm_private_network_interface_label
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
   vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
@@ -81,12 +89,11 @@ module "ignition" {
   cluster_id                    = local.cluster_id
   node_count                    = var.worker_count
   datacenter                    = var.vsphere_datacenter
-  datastore = ""
-  proxy_host = ""
-  proxy_port = ""
-  vcenter_url = ""
-  vsphere_password = ""
-  vsphere_user = ""
+  datastore                     = var.vsphere_datacenter
+  proxy_host                    = var.proxy_host 
+  vcenter_url                   = local.vcenter
+  vsphere_password              = local.vcenterpassword
+  vsphere_user                  = local.vcenteruser
 }
 // Module config file server for ign
 //
