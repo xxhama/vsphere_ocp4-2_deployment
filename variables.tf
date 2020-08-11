@@ -81,8 +81,20 @@ variable "infranode_vm_template" {
   type = string
 }
 
+variable "vm_domain_name" {
+  type = string
+}
+
 variable "ocp_vm_template" {
   type = string
+}
+
+variable "clustername" {
+  type = string
+}
+
+variable "vm_domain" {
+  description = "Domain Name of virtual machine"
 }
 
 variable "vm_private_ssh_key" {
@@ -108,6 +120,22 @@ variable "infranode_vm_ipv4_prefix_length" {
 }
 
 variable "infranode_vm_disk1_datastore" {
+  type = string
+}
+
+variable "vm_private_adapter_type" {
+  type = string
+}
+
+variable "vm_dns_servers" {
+  type = list(string)
+}
+
+variable "vm_dns_suffixes" {
+  type = list(string)
+}
+
+variable "vm_clone_timeout" {
   type = string
 }
 

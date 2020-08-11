@@ -11,7 +11,7 @@ data "external" "get_vcenter_details" {
 }
 
 locals {
-  cluster_id = var.cluster_name
+  cluster_id      = var.cluster_name
   vcenter         = data.external.get_vcenter_details.result["vcenter"]
   vcenteruser     = data.external.get_vcenter_details.result["vcenteruser"]
   vcenterpassword = data.external.get_vcenter_details.result["vcenterpassword"]
@@ -35,6 +35,12 @@ resource "local_file" "write_public_key" {
   content         = tls_private_key.installkey.public_key_openssh
   filename        = "${path.root}/installer-files/artifacts/openshift_rsa.pub"
   file_permission = 0600
+}
+
+resource "null_resource" "create-temp-random-dir" {
+  provisioner "local-exec" {
+    command = format("mkdir -p  /tmp/%s", random_string.random-dir.result)
+  }
 }
 
 // Module Infra node
@@ -63,7 +69,7 @@ module "deployVM_infranode" {
   vm_domain                          = var.vm_domain_name
   vm_folder                          = var.vm_folder
   proxy_server                       = var.proxy_host
-  vm_private_ssh_key                 = chomp(tls_private_key.nstallkey.private_key_pem)
+  vm_private_ssh_key                 = chomp(tls_private_key.installkey.private_key_pem)
   vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
@@ -132,8 +138,8 @@ module "ocp-deployment" {
 
 module "haproxy" {
   source                        = "./config_lb_server"
-  vm_os_user                    = var.vm_os_user
-  vm_os_password                = var.vm_os_password
-  vm_os_private_key             = var.vm_os_private_key
-  vm_ipv4_address               = var.vm_ipv4_address
+  vm_os_user                    = var.infranode_vm_os_user
+  vm_os_password                = var.infranode_vm_os_password
+  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
+  vm_ipv4_address               = var.infranode_ip
 }
