@@ -140,6 +140,6 @@ module "haproxy" {
   source                        = "./config_lb_server"
   vm_os_user                    = var.infranode_vm_os_user
   vm_os_password                = var.infranode_vm_os_password
-  vm_os_private_key             = var.infranode_vm_os_private_key
+  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
   vm_ipv4_address               = var.infranode_ip
 }
