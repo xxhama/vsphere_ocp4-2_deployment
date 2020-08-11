@@ -1,43 +1,43 @@
 // vSphere Variable
-variable "vsphere_options" {}
+variable "vsphere_datacenter" {}
+variable "vsphere_datastore" {}
+variable "vsphere_resource_pool" {}
+variable "vsphere_network" {}
+variable "folder" {}
 
 // OCP Variables
 variable "bootstrap_ip" {}
 variable "master_ips" {}
 variable "worker_ips" {}
-variable "storage" {}
-variable "ignition_files" {}
+variable "rhcos_template_path" {}
 
-provider "vsphere" {
-  vsphere_server = var.vsphere_options.vsphere_server
-  user = var.vsphere_options.vsphere_user
-  password = var.vsphere_options.vsphere_password
-  allow_unverified_ssl = true
-  version = "< 1.16"
-}
+// Ignition Files
+variable "master_ign" {}
+variable "worker_ign" {}
+variable "append_ign" {}
 
 // Data objects
 data "vsphere_datacenter" "dc" {
-  name = var.vsphere_options.vsphere_datacenter
+  name = var.vsphere_datacenter
 }
 
 data "vsphere_datastore_cluster" "datastore_cluster" {
-  name          = var.vsphere_options.datastore_cluster_name
+  name          = var.vsphere_datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_resource_pool" "pool" {
-  name          = var.vsphere_options.resource_pool_name
+  name          = var.vsphere_resource_pool
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_network" "network" {
-  name          = "OCP"
+  name          = var.vsphere_network
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_virtual_machine" "master-worker-template" {
-  name          = "Templates/CSPLAB-Supported/rhcos-4.2.0-x86_64-vmware-template"
+  name          = var.rhcos_template_path
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 

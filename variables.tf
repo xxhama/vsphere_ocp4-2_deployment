@@ -16,6 +16,10 @@ variable "cluster_name" {
   type = string
 }
 
+variable "vsphere_network" {
+  type = string
+}
+
 variable "openshift_cluster_network_cidr" {
   type    = string
   default = "10.128.0.0/14"
@@ -77,6 +81,10 @@ variable "infranode_vm_template" {
   type = string
 }
 
+variable "ocp_vm_template" {
+  type = string
+}
+
 variable "vm_private_ssh_key" {
 }
 
@@ -96,6 +104,10 @@ variable "infranode_vm_ipv4_gateway" {
 }
 
 variable "infranode_vm_ipv4_prefix_length" {
+  type = string
+}
+
+variable "infranode_vm_disk1_datastore" {
   type = string
 }
 

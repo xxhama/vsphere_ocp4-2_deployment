@@ -119,8 +119,13 @@ module "ocp-deployment" {
   workers_count         = var.worker_count
   bootstrap_ip          = var.bootstrap_ip
   master_ips            = var.master_ips
-  workers_ips           = var.worker_ips
-  location              = var.
+  worker_ips            = var.worker_ips
+  folder                = var.vm_folder
+  rhcos_template_path   = var.ocp_vm_template
+  vsphere_datacenter    = var.vsphere_datacenter
+  vsphere_datastore     = var.infranode_vm_disk1_datastore
+  vsphere_network       = var.vsphere_network
+  vsphere_resource_pool = var.vsphere_resource_pool
 }
 
 // Module Complete Check
