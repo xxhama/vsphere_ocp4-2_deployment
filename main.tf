@@ -105,3 +105,11 @@ module "ignition" {
 // 3. append-bootstrap.ign
 
 // Module Complete Check
+
+module "haproxy" {
+  source                        = "./config_lb_server"
+  vm_os_user                    = var.vm_os_user
+  vm_os_password                = var.vm_os_password
+  vm_os_private_key             = var.vm_os_private_key
+  vm_ipv4_address               = var.vm_ipv4_address
+}
