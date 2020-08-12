@@ -106,11 +106,8 @@ module "ignition" {
 
 module "ign_file_server" {
   source = "./ign-file-server"
-  ign_file = ""
-  infra_host = ""
-  infra_privatekey = ""
-  os_password = ""
-  os_user = ""
+  infra_host = var.infranode_ip
+  infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
 }
 
 // Module Configure LB
@@ -119,6 +116,13 @@ module "ign_file_server" {
 // 1. Master IPs
 // 2. Worker IPs
 // 3. Bootstrap IP
+module "haproxy" {
+  source                        = "./config_lb_server"
+  vm_os_user                    = var.infranode_vm_os_user
+  vm_os_password                = var.infranode_vm_os_password
+  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
+  vm_ipv4_address               = var.infranode_ip
+}
 
 // Module OCP Cluster
 // Input:
@@ -145,11 +149,3 @@ module "ocp-deployment" {
 }
 
 // Module Complete Check
-
-module "haproxy" {
-  source                        = "./config_lb_server"
-  vm_os_user                    = var.infranode_vm_os_user
-  vm_os_password                = var.infranode_vm_os_password
-  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
-  vm_ipv4_address               = var.infranode_ip
-}

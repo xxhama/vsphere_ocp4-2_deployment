@@ -1,5 +1,3 @@
-variable "ign_file" {}
-
 variable "infra_host" {
   type = string
   default = "172.18.8.240"
