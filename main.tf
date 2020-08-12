@@ -57,7 +57,7 @@ resource "random_string" "random-dir" {
 
 module "deployVM_infranode" {
   source = "./infra_vm_deployment"
-  
+
   #######
   vsphere_datacenter                 = var.vsphere_datacenter
   vsphere_resource_pool              = var.vsphere_resource_pool
@@ -69,7 +69,7 @@ module "deployVM_infranode" {
   vm_folder                          = var.vm_folder
   proxy_server                       = var.proxy_host
   vm_private_ssh_key                 = chomp(tls_private_key.installkey.private_key_pem)
-  vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
+  vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh)
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
   vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
@@ -95,13 +95,20 @@ module "ignition" {
   node_count                    = var.worker_count
   datacenter                    = var.vsphere_datacenter
   datastore                     = var.vsphere_datacenter
-  proxy_host                    = var.proxy_host 
+  proxy_host                    = var.proxy_host
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
   vsphere_user                  = local.vcenteruser
+  infra_ip                      = var.infranode_ip
 }
 // Module config file server for ign
 //
+
+module "ign_file_server" {
+  source = "./ign-file-server"
+  infra_host = var.infranode_ip
+  infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
+}
 
 // Module Configure LB
 // Download, Configure, Enable/Start HAProxy
@@ -109,17 +116,25 @@ module "ignition" {
 // 1. Master IPs
 // 2. Worker IPs
 // 3. Bootstrap IP
+module "haproxy" {
+  source                        = "./config_lb_server"
+  vm_os_user                    = var.infranode_vm_os_user
+  vm_os_password                = var.infranode_vm_os_password
+  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
+  vm_ipv4_address               = var.infranode_ip
+}
 
 // Module OCP Cluster
 // Input:
 // 1. master.ign
 // 2. worker.ign
 // 3. append-bootstrap.ign
+
 module "ocp-deployment" {
   source = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
   worker_ign            = module.ignition.worker_ignition
-  append_ign            = module.ignition.bootstrap_ignition
+  append_ign            = module.ignition.append_ignition
   masters_count         = var.master_count
   workers_count         = var.worker_count
   bootstrap_ip          = var.bootstrap_ip
@@ -134,11 +149,3 @@ module "ocp-deployment" {
 }
 
 // Module Complete Check
-
-module "haproxy" {
-  source                        = "./config_lb_server"
-  vm_os_user                    = var.infranode_vm_os_user
-  vm_os_password                = var.infranode_vm_os_password
-  vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
-  vm_ipv4_address               = var.infranode_ip
-}
