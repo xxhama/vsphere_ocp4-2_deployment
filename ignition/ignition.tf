@@ -97,3 +97,8 @@ data "local_file" "worker_ign" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/worker.ign"
 }
+
+data "local_file" "bootstrap_ign" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/bootstrap.ign"
+}

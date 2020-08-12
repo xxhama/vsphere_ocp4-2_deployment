@@ -103,6 +103,13 @@ module "ignition" {
 // Module config file server for ign
 //
 
+module "ign_file_server" {
+  source = "./ign-file-server"
+  ign_file = ""
+  infra_host = ""
+  infra_privatekey = ""
+}
+
 // Module Configure LB
 // Download, Configure, Enable/Start HAProxy
 // Input:
@@ -119,7 +126,7 @@ module "ocp-deployment" {
   source = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
   worker_ign            = module.ignition.worker_ignition
-  append_ign            = module.ignition.bootstrap_ignition
+  append_ign            = module.ignition.append_ignition
   masters_count         = var.master_count
   workers_count         = var.worker_count
   bootstrap_ip          = var.bootstrap_ip
