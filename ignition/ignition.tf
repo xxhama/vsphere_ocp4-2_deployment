@@ -83,6 +83,10 @@ EOF
   }
 }
 
+resource "null_resource" "create_append_ignition" {
+
+}
+
 data "local_file" "master_ign" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/master.ign"

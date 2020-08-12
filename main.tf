@@ -99,6 +99,7 @@ module "ignition" {
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
   vsphere_user                  = local.vcenteruser
+  infra_ip                      = var.infranode_ip
 }
 // Module config file server for ign
 //
