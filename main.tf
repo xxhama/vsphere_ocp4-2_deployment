@@ -57,7 +57,7 @@ resource "random_string" "random-dir" {
 
 module "deployVM_infranode" {
   source = "./infra_vm_deployment"
-  
+
   #######
   vsphere_datacenter                 = var.vsphere_datacenter
   vsphere_resource_pool              = var.vsphere_resource_pool
@@ -69,7 +69,7 @@ module "deployVM_infranode" {
   vm_folder                          = var.vm_folder
   proxy_server                       = var.proxy_host
   vm_private_ssh_key                 = chomp(tls_private_key.installkey.private_key_pem)
-  vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh) 
+  vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh)
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
   vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
@@ -95,7 +95,7 @@ module "ignition" {
   node_count                    = var.worker_count
   datacenter                    = var.vsphere_datacenter
   datastore                     = var.vsphere_datacenter
-  proxy_host                    = var.proxy_host 
+  proxy_host                    = var.proxy_host
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
   vsphere_user                  = local.vcenteruser
@@ -108,6 +108,8 @@ module "ign_file_server" {
   ign_file = ""
   infra_host = ""
   infra_privatekey = ""
+  os_password = ""
+  os_user = ""
 }
 
 // Module Configure LB
@@ -122,6 +124,7 @@ module "ign_file_server" {
 // 1. master.ign
 // 2. worker.ign
 // 3. append-bootstrap.ign
+
 module "ocp-deployment" {
   source = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
