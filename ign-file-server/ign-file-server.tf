@@ -10,6 +10,7 @@ resource "null_resource" "copy_ign_file" {
     source = "./installer-files/bootstrap.ign"
     destination = "/tmp/ignition"
   }
+  
 
   provisioner "remote-exec" {
     inline = [
@@ -18,5 +19,14 @@ resource "null_resource" "copy_ign_file" {
       "systemctl start httpd",
       "ln -s /tmp/ignition /var/www/html"
     ]
+  }
+}
+
+resource "null_resource" "web_server_created" {
+  depends_on = [
+    null_resource.copy_ign_file
+  ]
+  provisioner "local-exec" {
+    command = "echo 'Web server created'"
   }
 }
