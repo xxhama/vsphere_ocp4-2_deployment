@@ -11,7 +11,7 @@ data "external" "get_vcenter_details" {
 }
 
 locals {
-  cluster_id      = var.cluster_name
+  cluster_id      = var.clustername
   vcenter         = data.external.get_vcenter_details.result["vcenter"]
   vcenteruser     = data.external.get_vcenter_details.result["vcenteruser"]
   vcenterpassword = data.external.get_vcenter_details.result["vcenterpassword"]
