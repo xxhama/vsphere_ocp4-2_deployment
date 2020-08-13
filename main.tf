@@ -148,4 +148,5 @@ module "ocp-deployment" {
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
   domain_name           = var.vm_domain_name
+  clustername           = var.clustername
 }

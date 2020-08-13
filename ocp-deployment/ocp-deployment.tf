@@ -17,7 +17,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
 
     customize {
       linux_options {
-        domain = var.domain_name
+        domain = "${var.clustername}.${var.domain_name}"
         host_name = "bootstrap"
       }
 
@@ -70,7 +70,7 @@ resource "vsphere_virtual_machine" "masters" {
 
     customize {
       linux_options {
-        domain = var.domain_name
+        domain = "${var.clustername}.${var.domain_name}"
         host_name = "master${count.index}"
       }
 
@@ -122,7 +122,7 @@ resource "vsphere_virtual_machine" "workers" {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
     customize {
       linux_options {
-        domain = var.domain_name
+        domain = "${var.clustername}.${var.domain_name}"
         host_name = "worker${count.index}"
       }
 

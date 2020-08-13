@@ -17,7 +17,8 @@ variable "worker_ign" {}
 variable "append_ign" {}
 
 // Host Names
-variable domain_name {}
+variable "domain_name" {}
+variable "clustername" {}
 
 // Data objects
 data "vsphere_datacenter" "dc" {
