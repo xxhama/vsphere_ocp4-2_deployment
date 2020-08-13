@@ -60,7 +60,6 @@ variable "vsphere_datacenter" {
   description = "Target vSphere datacenter for virtual machine creation"
 }
 
-
 variable "vsphere_resource_pool" {
   description = "Target vSphere Resource Pool to host the virtual machine"
 }
