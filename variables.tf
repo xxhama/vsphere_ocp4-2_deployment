@@ -100,3 +100,7 @@ variable "worker_ips" {
 variable "vm_folder" {
   type = string
 }
+
+variable "vsphere_datastore" {
+  type = string
+}
