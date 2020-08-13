@@ -16,6 +16,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
 
     customize {
+      linux_options{}
       network_interface {
         ipv4_address = var.bootstrap_ip
       }
