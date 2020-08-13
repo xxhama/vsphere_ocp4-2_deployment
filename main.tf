@@ -84,12 +84,12 @@ module "deployVM_infranode" {
 
 module "ignition" {
   source                        = "./ignition"
-  base_domain                   = var.base_domain
+  base_domain                   = var.ocp_cluster_domain
   openshift_version             = var.openshift_version
   master_count                  = var.master_count
-  cluster_name                  = var.cluster_name
+  clustername                   = var.cluster_name
   service_network_cidr          = var.openshift_service_network_cidr
-  openshift_pull_secret         = var.openshift_pull_secret
+  openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   cluster_id                    = local.cluster_id
   node_count                    = var.worker_count

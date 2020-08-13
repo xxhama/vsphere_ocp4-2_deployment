@@ -112,3 +112,15 @@ variable "vm_domain" {
   description = "Domain Name of virtual machine"
 }
 
+variable "vm_private_network_interface_label" {
+  description = "vSphere port group or network label for virtual machine's private vNIC"
+}
+
+variable "vm_private_ssh_key" {
+  type = string
+}
+
+variable "vm_public_ssh_key" {
+  type = string
+}
+

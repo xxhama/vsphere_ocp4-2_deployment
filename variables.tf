@@ -1,4 +1,4 @@
-variable "base_domain" {
+variable "ocp_cluster_domain" {
   type = string
 }
 
@@ -7,12 +7,14 @@ variable "openshift_version" {
   default = "4.3.26"
 }
 
+
+
 variable "master_count" {
   type = string
   default = 3
 }
 
-variable "cluster_name" {
+variable "clustername" {
   type = string
 }
 
@@ -46,7 +48,9 @@ variable "openshift_service_network_cidr" {
   default = "172.30.0.0/16"
 }
 
-variable "openshift_pull_secret" {}
+variable "pullsecret" {
+  type = string
+}
 
 variable "worker_count" {}
 
