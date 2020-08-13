@@ -6,3 +6,7 @@ variable "infra_host" {
 variable "infra_private_key" {
   type = string
 }
+variable "dependsOn" {
+  default     = "true"
+  description = "Boolean for dependency"
+}
