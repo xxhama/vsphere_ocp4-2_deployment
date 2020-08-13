@@ -15,19 +15,23 @@ data "vsphere_resource_pool" "vsphere_resource_pool" {
   datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
 }
 
+data "vsphere_network" "vm_private_network" {
+  name          = var.vm_private_network_interface_label
+  datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
+}
+
 data "vsphere_virtual_machine" "vm_template" {
   name          = var.vm_template
   datacenter_id = data.vsphere_datacenter.vsphere_datacenter.id
 }
 
-#Variable : vm_-name
-variable "vm_name" {
-  type = string
-}
-
 #########################################################
 ##### Resource : vm_
 #########################################################
+
+variable "vm_name" {
+  type = string
+}
 
 variable "vm_os_password" {
   type        = string
@@ -102,5 +106,9 @@ variable "random" {
 variable "dependsOn" {
   default     = "true"
   description = "Boolean for dependency"
+}
+
+variable "vm_domain" {
+  description = "Domain Name of virtual machine"
 }
 
