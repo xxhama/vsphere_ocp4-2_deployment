@@ -40,3 +40,16 @@ data "vsphere_virtual_machine" "master-worker-template" {
   name          = var.rhcos_template_path
   datacenter_id = data.vsphere_datacenter.dc.id
 }
+
+variable "dependsOn" {
+  default     = "true"
+  description = "Boolean for dependency"
+}
+
+variable "masters_count"{
+  type = string
+}
+
+variable "worker_count"{
+  type = string
+}
