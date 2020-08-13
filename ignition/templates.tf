@@ -9,7 +9,7 @@ compute:
 controlPlane:
   hyperthreading: Enabled
   name: master
-  replicas: 3
+  replicas: ${var.master_count}
 metadata:
   name: ${var.cluster_name}
 platform:

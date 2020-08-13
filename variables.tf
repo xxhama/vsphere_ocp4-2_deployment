@@ -1,53 +1,15 @@
-variable "ocp_cluster_domain" {
-  type = string
-}
-
 variable "openshift_version" {
   type    = string
   default = "4.3.26"
-}
-
-variable "master_count" {
-  type = string
-  default = 3
 }
 
 variable "vsphere_network" {
   type = string
 }
 
-variable "openshift_cluster_network_cidr" {
-  type    = string
-  default = "10.128.0.0/14"
-}
-
-variable "openshift_cluster_network_host_prefix" {
-  type    = string
-  default = 23
-}
-variable "machine_v4_cidrs" {
-  type = list(string)
-  default = [
-    "10.0.0.0/16"
-  ]
-}
-
-variable "machine_v6_cidrs" {
-  type    = list(string)
-  default = []
-}
-
-variable "openshift_service_network_cidr" {
-  type    = string
-  default = "172.30.0.0/16"
-}
-
 variable "pullsecret" {
   type = string
 }
-
-variable "worker_count" {}
-
 ### vSphere information
 
 variable "vsphere_datacenter" {
@@ -62,7 +24,7 @@ variable "vsphere_cluster" {
   type = string
 }
 
-variable "proxy_host" {
+variable "proxy_server" {
   type        = string
 }
 
@@ -87,20 +49,6 @@ variable "ocp_vm_template" {
   type = string
 }
 
-variable "clustername" {
-  type = string
-}
-
-variable "vm_domain" {
-  description = "Domain Name of virtual machine"
-}
-
-variable "vm_private_ssh_key" {
-}
-
-variable "vm_public_ssh_key" {
-}
-
 variable "infranode_vm_os_user" {
   type = string
 }
@@ -123,10 +71,6 @@ variable "infranode_vm_disk1_datastore" {
 
 variable "vm_private_adapter_type" {
   type = string
-}
-
-variable "vm_private_network_interface_label"{
-  type = string 
 }
 
 variable "vm_dns_servers" {

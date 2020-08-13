@@ -12,10 +12,19 @@ resource "vsphere_virtual_machine" "bootstrap" {
   scsi_type            = data.vsphere_virtual_machine.master-worker-template.scsi_type
   enable_disk_uuid     = true
 
+  clone {
+    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
+
+    customize {
+      network_interface {
+        ipv4_address = var.bootstrap_ip
+      }
+    }
+  }
+
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
-    ipv4_address      = var.bootstrap_ip
   }
 
   disk {
@@ -24,10 +33,6 @@ resource "vsphere_virtual_machine" "bootstrap" {
     eagerly_scrub    = data.vsphere_virtual_machine.master-worker-template.disks[0].eagerly_scrub
     thin_provisioned = true
     keep_on_remove   = false
-  }
-
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
   }
 
   vapp {
@@ -55,10 +60,19 @@ resource "vsphere_virtual_machine" "masters" {
   enable_disk_uuid     = true
   wait_for_guest_ip_timeout = 10
 
+  clone {
+    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
+
+    customize {
+      network_interface {
+        ipv4_address = each.value
+      }
+    }
+  }
+
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
-    ipv4_address      = each.value
   }
 
   disk {
@@ -67,10 +81,6 @@ resource "vsphere_virtual_machine" "masters" {
     eagerly_scrub    = data.vsphere_virtual_machine.master-worker-template.disks[0].eagerly_scrub
     thin_provisioned = true
     keep_on_remove   = false
-  }
-
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
   }
 
   vapp {
@@ -85,7 +95,7 @@ resource "vsphere_virtual_machine" "workers" {
   for_each = var.worker_ips
   depends_on = [vsphere_virtual_machine.masters]
 
-  name                 = each.key
+  name                 = "worker-${each.key}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -98,11 +108,18 @@ resource "vsphere_virtual_machine" "workers" {
   enable_disk_uuid     = true
   wait_for_guest_ip_timeout = 15
 
+  clone {
+    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
+    customize {
+      network_interface {
+        ipv4_address = each.value
+      }
+    }
+  }
+
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
-    mac_address       = each.value["macAddress"]
-    use_static_mac    = true
   }
 
   disk {
@@ -111,10 +128,6 @@ resource "vsphere_virtual_machine" "workers" {
     eagerly_scrub    = data.vsphere_virtual_machine.master-worker-template.disks[0].eagerly_scrub
     thin_provisioned = true
     keep_on_remove   = false
-  }
-
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
   }
 
   vapp {

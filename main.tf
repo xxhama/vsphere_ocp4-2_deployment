@@ -11,13 +11,10 @@ data "external" "get_vcenter_details" {
 }
 
 locals {
-  cluster_id      = var.clustername
   vcenter         = data.external.get_vcenter_details.result["vcenter"]
   vcenteruser     = data.external.get_vcenter_details.result["vcenteruser"]
   vcenterpassword = data.external.get_vcenter_details.result["vcenterpassword"]
 }
-
-
 
 # SSH Key for VMs
 resource "tls_private_key" "installkey" {
@@ -67,14 +64,14 @@ module "deployVM_infranode" {
   vm_os_user                         = var.infranode_vm_os_user
   vm_domain                          = var.vm_domain_name
   vm_folder                          = var.vm_folder
-  proxy_server                       = var.proxy_host
+  proxy_server                       = var.proxy_server
   vm_private_ssh_key                 = chomp(tls_private_key.installkey.private_key_pem)
   vm_public_ssh_key                  = chomp(tls_private_key.installkey.public_key_openssh)
   vm_ipv4_gateway                    = var.infranode_vm_ipv4_gateway
   vm_ipv4_address                    = var.infranode_ip
   vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
   vm_private_adapter_type            = var.vm_private_adapter_type
-  vm_private_network_interface_label = var.vm_private_network_interface_label
+  vm_private_network_interface_label = var.vsphere_network
   vm_disk1_datastore                 = var.infranode_vm_disk1_datastore
   vm_dns_servers                     = var.vm_dns_servers
   vm_dns_suffixes                    = var.vm_dns_suffixes
@@ -84,17 +81,15 @@ module "deployVM_infranode" {
 
 module "ignition" {
   source                        = "./ignition"
-  base_domain                   = var.ocp_cluster_domain
+  cluster_name                  = var.vsphere_cluster
+  base_domain                   = var.vm_domain_name
   openshift_version             = var.openshift_version
-  master_count                  = var.master_count
-  service_network_cidr          = var.openshift_service_network_cidr
+  master_count                  = length(var.master_ips)
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
-  cluster_id                    = local.cluster_id
-  node_count                    = var.worker_count
   datacenter                    = var.vsphere_datacenter
   datastore                     = var.vsphere_datacenter
-  proxy_host                    = var.proxy_host
+  proxy_host                    = var.proxy_server
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
   vsphere_user                  = local.vcenteruser
@@ -104,6 +99,8 @@ module "ignition" {
 //
 
 module "ign_file_server" {
+  depends_on = [module.deployVM_infranode]
+
   source = "./ign-file-server"
   infra_host = var.infranode_ip
   infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
@@ -116,6 +113,8 @@ module "ign_file_server" {
 // 2. Worker IPs
 // 3. Bootstrap IP
 module "haproxy" {
+  depends_on = [module.deployVM_infranode]
+
   source                        = "./config_lb_server"
   vm_os_user                    = var.infranode_vm_os_user
   vm_os_password                = var.infranode_vm_os_password
@@ -130,12 +129,14 @@ module "haproxy" {
 // 3. append-bootstrap.ign
 
 module "ocp-deployment" {
+  depends_on = [module.ign_file_server]
+
   source = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
   worker_ign            = module.ignition.worker_ignition
   append_ign            = module.ignition.append_ignition
-  masters_count         = var.master_count
-  workers_count         = var.worker_count
+  masters_count         = length(var.master_ips)
+  workers_count         = length(var.worker_ips)
   bootstrap_ip          = var.bootstrap_ip
   master_ips            = var.master_ips
   worker_ips            = var.worker_ips
@@ -146,5 +147,3 @@ module "ocp-deployment" {
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
 }
-
-// Module Complete Check
