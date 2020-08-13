@@ -82,8 +82,9 @@ EOF
   }
 }
 
-resource "null_resource" "create_append_ignition" {
-
+data "local_file" "kubeadmin_password" {
+  filename = "${local.installer_workspace}/auth/kubeadmin-password"
+  depends_on = [null_resource.generate_ignition]
 }
 
 data "local_file" "master_ign" {

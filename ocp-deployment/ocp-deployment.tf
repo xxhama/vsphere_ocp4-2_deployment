@@ -43,7 +43,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = var.append_ign
+      "guestinfo.ignition.config.data" = base64encode(var.append_ign)
     }
   }
 }
@@ -96,7 +96,7 @@ resource "vsphere_virtual_machine" "masters" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = var.master_ign
+      "guestinfo.ignition.config.data" = base64encode(var.master_ign)
     }
   }
 }
@@ -148,7 +148,7 @@ resource "vsphere_virtual_machine" "workers" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = var.worker_ign
+      "guestinfo.ignition.config.data" = base64encode(var.worker_ign)
     }
   }
 }
