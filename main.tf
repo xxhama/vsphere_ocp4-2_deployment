@@ -99,7 +99,7 @@ module "ignition" {
 //
 
 module "ign_file_server" {
-  depends_on = [null_resource.vm-create_done.id]
+  dependsOn = module.deployVM_infranode.id
 
   source = "./ign-file-server"
   infra_host = var.infranode_ip
@@ -113,7 +113,7 @@ module "ign_file_server" {
 // 2. Worker IPs
 // 3. Bootstrap IP
 module "haproxy" {
-  depends_on = [null_resource.vm-create_done.id]
+  dependsOn = module.deployVM_infranode.id
 
   source                        = "./config_lb_server"
   vm_os_user                    = var.infranode_vm_os_user
@@ -129,7 +129,7 @@ module "haproxy" {
 // 3. append-bootstrap.ign
 
 module "ocp-deployment" {
-  depends_on = [module.ign_file_server]
+  dependsOn = module.ign_file_server.dependsOn
 
   source = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
