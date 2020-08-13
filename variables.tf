@@ -125,6 +125,10 @@ variable "vm_private_adapter_type" {
   type = string
 }
 
+variable "vm_private_network_interface_label"{
+  type = string 
+}
+
 variable "vm_dns_servers" {
   type = list(string)
 }

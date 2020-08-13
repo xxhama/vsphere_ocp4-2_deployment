@@ -142,6 +142,29 @@
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
+        "name": "vm_private_adapter_type",
+        "default":"${vsphere_managed_inventory_definition.adapter_type}",
+        "description": "Private Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "Private Network Adapter Type for infrastructure and OCP cluster VM",
+        "hidden": true,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "vm_private_network_interface_label",
+        "label": "Private Network name for infrastructure and OCP cluster VM",
+        "type": "string",
+        "description": "Private vSphere Network name for infrastructure and OCP cluster VM.",
+        "required": true,
+        "secured": false,
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
         "name": "ocp_cluster_domain",
         "label": "OCP Base Domain Name",
         "type": "string",

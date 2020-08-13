@@ -124,3 +124,7 @@ variable "vm_public_ssh_key" {
   type = string
 }
 
+variable "vm_private_adapter_type"{
+  type = string 
+}
+
