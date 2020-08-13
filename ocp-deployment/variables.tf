@@ -48,11 +48,3 @@ variable "dependsOn" {
   default     = "true"
   description = "Boolean for dependency"
 }
-
-variable "masters_count"{
-  type = string
-}
-
-variable "workers_count"{
-  type = string
-}

@@ -49,10 +49,10 @@ resource "vsphere_virtual_machine" "bootstrap" {
 }
 
 resource "vsphere_virtual_machine" "masters" {
-  for_each = var.master_ips
+  count = length(var.master_ips)
   depends_on = [vsphere_virtual_machine.bootstrap]
 
-  name                 = "master${each.key}"
+  name                 = "master${count.index}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -71,11 +71,11 @@ resource "vsphere_virtual_machine" "masters" {
     customize {
       linux_options {
         domain = var.domain_name
-        host_name = "master${each.key}"
+        host_name = "master${count.index}"
       }
 
       network_interface {
-        ipv4_address = each.value
+        ipv4_address = var.master_ips[count.index]
       }
     }
   }
@@ -102,10 +102,10 @@ resource "vsphere_virtual_machine" "masters" {
 }
 
 resource "vsphere_virtual_machine" "workers" {
-  for_each = var.worker_ips
+  count = list(var.master_ips)
   depends_on = [vsphere_virtual_machine.masters]
 
-  name                 = "worker${each.key}"
+  name                 = "worker${count.index}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -123,11 +123,11 @@ resource "vsphere_virtual_machine" "workers" {
     customize {
       linux_options {
         domain = var.domain_name
-        host_name = "worker${each.key}"
+        host_name = "worker${count.index}"
       }
 
       network_interface {
-        ipv4_address = each.value
+        ipv4_address = var.master_ips[count.index]
       }
     }
   }

@@ -138,8 +138,6 @@ module "ocp-deployment" {
   master_ign            = module.ignition.master_ignition
   worker_ign            = module.ignition.worker_ignition
   append_ign            = module.ignition.append_ignition
-  masters_count         = length(var.master_ips)
-  workers_count         = length(var.worker_ips)
   bootstrap_ip          = var.bootstrap_ip
   master_ips            = var.master_ips
   worker_ips            = var.worker_ips
