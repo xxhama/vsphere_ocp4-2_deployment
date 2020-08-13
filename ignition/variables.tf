@@ -48,6 +48,10 @@ variable "datastore" {
   type = string
 }
 
+variable "infra_ip" {
+  type = string
+}
+
 variable "proxy_host" {
   type = string
 }

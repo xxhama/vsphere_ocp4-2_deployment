@@ -27,10 +27,41 @@ proxy:
 EOF
 }
 
+data "template_file" "append_ignition_template" {
+  template = <<EOF
+{
+"ignition": {
+  "config": {
+    "append": [
+      {
+        "source": "http://${var.infra_ip}/ignition",
+        "verification": {}
+      }
+    ]
+  },
+  "timeouts": {},
+  "version": "2.1.0"
+},
+"networkd": {},
+"passwd": {},
+"storage": {},
+"systemd": {}
+}
+EOF
+}
+
 resource "local_file" "install_config_yaml" {
   content  = data.template_file.install_config_yaml.rendered
   filename = "${local.installer_workspace}/install-config.yaml"
   depends_on = [
     null_resource.download_binaries,
+  ]
+}
+
+resource "local_file" "append_ignition" {
+  content = data.template_file.install_config_yaml.rendered
+  filename = "${local.installer_workspace}/append.ign"
+  depends_on = [
+    null_resource.download_binaries
   ]
 }
