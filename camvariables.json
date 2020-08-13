@@ -154,6 +154,18 @@
         "group_name": "openshift_container_platform_info"
       },
       {
+        "name": "vsphere_datastore",
+        "default":"${vsphere_managed_inventory_definition.datastore}",
+        "description": "Virtual machine datastore name",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "Datastore Name",
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
         "name": "ocp_cluster_domain",
         "label": "OCP Base Domain Name",
         "type": "string",

@@ -146,7 +146,7 @@ module "ocp-deployment" {
   folder                = var.vm_folder
   rhcos_template_path   = var.ocp_vm_template
   vsphere_datacenter    = var.vsphere_datacenter
-  vsphere_datastore     = var.infranode_vm_disk1_datastore
+  vsphere_datastore     = var.vsphere_datastore
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
 }
