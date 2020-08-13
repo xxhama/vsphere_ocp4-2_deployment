@@ -22,7 +22,17 @@
         "label": "OpenShift Infrastructure Node Settings"
       }
     ],
-    "template_input_params": [
+    "template_input_params": [{
+      "name": "clustername",
+      "label": "OCP Cluster Name",
+      "type": "string",
+      "description": "A unique name that identifies each OCP cluster. The combination of this cluster name and the OCP domain name creates a cluster domain, that will be used by OCP cluster nodes and the URLs.",
+      "required": true,
+      "secured": false,
+      "hidden": false,
+      "immutable": false,
+      "group_name": "openshift_container_platform_info"
+    },
       {
         "name": "infranode_ip",
         "label": "Infrastructure Node Public IP Address",

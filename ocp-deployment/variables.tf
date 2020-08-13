@@ -16,6 +16,9 @@ variable "master_ign" {}
 variable "worker_ign" {}
 variable "append_ign" {}
 
+// Host Names
+variable domain_name {}
+
 // Data objects
 data "vsphere_datacenter" "dc" {
   name = var.vsphere_datacenter

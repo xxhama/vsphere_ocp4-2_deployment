@@ -84,7 +84,7 @@ module "deployVM_infranode" {
 
 module "ignition" {
   source                        = "./ignition"
-  cluster_name                  = var.vsphere_cluster
+  cluster_name                  = var.clustername
   base_domain                   = var.vm_domain_name
   openshift_version             = var.openshift_version
   master_count                  = length(var.master_ips)
@@ -134,7 +134,7 @@ module "haproxy" {
 module "ocp-deployment" {
   dependsOn = module.ign_file_server.dependsOn
 
-  source = "./ocp-deployment"
+  source                = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition
   worker_ign            = module.ignition.worker_ignition
   append_ign            = module.ignition.append_ignition
@@ -149,4 +149,5 @@ module "ocp-deployment" {
   vsphere_datastore     = var.vsphere_datastore
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
+  domain_name           = var.vm_domain_name
 }

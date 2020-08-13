@@ -16,7 +16,11 @@ resource "vsphere_virtual_machine" "bootstrap" {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
 
     customize {
-      linux_options{}
+      linux_options {
+        domain = var.domain_name
+        host_name = "bootstrap"
+      }
+
       network_interface {
         ipv4_address = var.bootstrap_ip
       }
@@ -48,7 +52,7 @@ resource "vsphere_virtual_machine" "masters" {
   for_each = var.master_ips
   depends_on = [vsphere_virtual_machine.bootstrap]
 
-  name                 = "master-${each.key}"
+  name                 = "master${each.key}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -65,6 +69,11 @@ resource "vsphere_virtual_machine" "masters" {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
 
     customize {
+      linux_options {
+        domain = var.domain_name
+        host_name = "master${each.key}"
+      }
+
       network_interface {
         ipv4_address = each.value
       }
@@ -96,7 +105,7 @@ resource "vsphere_virtual_machine" "workers" {
   for_each = var.worker_ips
   depends_on = [vsphere_virtual_machine.masters]
 
-  name                 = "worker-${each.key}"
+  name                 = "worker${each.key}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -112,6 +121,11 @@ resource "vsphere_virtual_machine" "workers" {
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
     customize {
+      linux_options {
+        domain = var.domain_name
+        host_name = "worker${each.key}"
+      }
+
       network_interface {
         ipv4_address = each.value
       }

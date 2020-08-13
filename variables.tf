@@ -20,7 +20,7 @@ variable "vsphere_resource_pool" {
   type = string
 }
 
-variable "vsphere_cluster" {
+variable "clustername" {
   type = string
 }
 
