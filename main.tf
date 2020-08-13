@@ -1,4 +1,7 @@
-provider "vsphere" {}
+provider "vsphere" {
+  version              = "< 1.16.0"
+  allow_unverified_ssl = "true"
+}
 
 resource "random_string" "cluster_id" {
   length  = 10
