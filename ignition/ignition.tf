@@ -1,7 +1,6 @@
 locals {
   installer_workspace     = "${path.root}/installer-files"
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
-  cluster_nr              = element(split("-", var.cluster_name), 1)
 }
 
 //# Proxy TLS Cert

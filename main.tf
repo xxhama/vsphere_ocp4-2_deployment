@@ -79,7 +79,6 @@ module "deployVM_infranode" {
   vm_dns_suffixes                    = var.vm_dns_suffixes
   vm_clone_timeout                   = var.vm_clone_timeout
   random                             = random_string.random-dir.result
-
 }
 
 module "ignition" {
@@ -87,7 +86,6 @@ module "ignition" {
   base_domain                   = var.ocp_cluster_domain
   openshift_version             = var.openshift_version
   master_count                  = var.master_count
-  clustername                   = var.cluster_name
   service_network_cidr          = var.openshift_service_network_cidr
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)

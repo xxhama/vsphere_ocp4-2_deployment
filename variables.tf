@@ -7,15 +7,9 @@ variable "openshift_version" {
   default = "4.3.26"
 }
 
-
-
 variable "master_count" {
   type = string
   default = 3
-}
-
-variable "clustername" {
-  type = string
 }
 
 variable "vsphere_network" {

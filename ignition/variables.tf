@@ -24,10 +24,6 @@ variable "openshift_version" {
   default = "latest"
 }
 
-variable "cluster_name" {
-  type = string
-}
-
 variable "vcenter_url" {
   type = string
 }
