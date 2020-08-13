@@ -29,7 +29,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
 
   disk {
     label            = "disk0"
-    size             = 120
+    size             = 200
     eagerly_scrub    = data.vsphere_virtual_machine.master-worker-template.disks[0].eagerly_scrub
     thin_provisioned = true
     keep_on_remove   = false
