@@ -50,6 +50,6 @@ variable "masters_count"{
   type = string
 }
 
-variable "worker_count"{
+variable "workers_count"{
   type = string
 }
