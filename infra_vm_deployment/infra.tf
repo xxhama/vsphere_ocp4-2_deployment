@@ -21,6 +21,8 @@ resource "vsphere_virtual_machine" "vm" {
       network_interface {
         ipv4_address = var.vm_ipv4_address
         ipv4_netmask = var.vm_ipv4_prefix_length
+        use_static_mac    = true
+        mac_address       = "00:50:56:a5:40:33"
         
       }
 
