@@ -145,7 +145,7 @@
       },
       {
         "name": "vm_private_adapter_type",
-        "default":"${penshift_container_platform_info.vm_private_adapter_type}",
+        "default":"${openshift_container_platform_info.vm_private_adapter_type}",
         "description": "Private Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
         "type": "string",
         "required": true,
