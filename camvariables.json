@@ -2,11 +2,11 @@
     "terraform_version": "~> 0.12.0",
     "input_datatypes": [
       {
-        "name": "vsphere_managed_inventory_definition",
-        "label": "vSphere Managed Inventory Definition"
+        "name": "openshift_container_platform_info",
+        "label": "Platform information"
       },    
       {
-        "name": "openshift42_infra_node_on_vmware",
+        "name": "openshift_infra_node_on_vmware",
         "label": "OpenShift Container Platform 4.2 Infrastructure Node on VMware"
       }
     ], 
