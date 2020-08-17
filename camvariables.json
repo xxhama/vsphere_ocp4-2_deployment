@@ -3,7 +3,7 @@
     "input_datatypes": [
       {
         "name": "openshift_container_platform_info",
-        "label": "vSphere Managed Inventory Definition"
+        "label": "OpenShift platform information"
       },    
       {
         "name": "openshift_infra_node_on_vmware",
