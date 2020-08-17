@@ -25,6 +25,7 @@
     "template_input_params": [{
       "name": "clustername",
       "label": "OCP Cluster Name",
+      "default": "${openshift_infra_node_on_vmware.clustername}",
       "type": "string",
       "description": "A unique name that identifies each OCP cluster. The combination of this cluster name and the OCP domain name creates a cluster domain, that will be used by OCP cluster nodes and the URLs.",
       "required": true,
@@ -37,6 +38,7 @@
         "name": "infranode_ip",
         "label": "Infrastructure Node Public IP Address",
         "type": "string",
+        "default": "${openshift_infra_node_on_vmware.infranode_ip}",
         "description": "Infrastructure Node Public IP Address. This IP address must have a mapping to the OCP cluster app URL in your DNS or in your local etc hosts file.",
         "required": true,
         "secured": false,
@@ -48,6 +50,7 @@
         "name": "infranode_hostname",
         "label": "Infrastructure Node Hostname",
         "type": "string",
+        "default": "${openshift_infra_node_on_vmware.infranode_hostname}",
         "description": "Infrastructure Node Hostname.",
         "required": true,
         "secured": false,
@@ -64,7 +67,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift42_infra_node_on_vmware.infranode_vm_disk1_datastore}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_disk1_datastore}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -76,7 +79,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_ipv4_gateway}",
+        "default": "${openshift_infra_node_on_vmware.vm_ipv4_gateway}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -88,7 +91,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_ipv4_netmask}",
+        "default": "${openshift_infra_node_on_vmware.vm_ipv4_netmask}",
         "regex": "^([8-9]|[1-2][0-9]|3[0-2])$",
         "regexdesc": "Provide an integer value between 1 and 32",
         "group_name": "openshift_infra_node_on_vmware"
@@ -102,7 +105,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_os_user}",
+        "default": "${openshift_infra_node_on_vmware.vm_os_user}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -114,7 +117,7 @@
         "secured": true,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_os_password}",
+        "default": "${openshift_infra_node_on_vmware.vm_os_password}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -126,7 +129,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_image_template}",
+        "default": "${openshift_infra_node_on_vmware.vm_image_template}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -138,11 +141,12 @@
         "label": "Proxy server and port",
         "hidden": false,
         "immutable": false,
+        "default": "${openshift_infra_node_on_vmware.proxy_server}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
         "name": "vm_private_adapter_type",
-        "default":"${vsphere_managed_inventory_definition.adapter_type}",
+        "default":"${penshift_container_platform_info.adapter_type}",
         "description": "Private Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
         "type": "string",
         "required": true,
@@ -155,6 +159,7 @@
       {
         "name": "vsphere_network",
         "label": "Private Network name for infrastructure and OCP cluster VM",
+        "default":"${openshift_container_platform_info.vsphere_network}",
         "type": "string",
         "description": "Private vSphere Network name for infrastructure and OCP cluster VM.",
         "required": true,
@@ -165,7 +170,7 @@
       },
       {
         "name": "vsphere_datastore",
-        "default":"${vsphere_managed_inventory_definition.datastore}",
+        "default":"${openshift_container_platform_info.datastore}",
         "description": "Virtual machine datastore name",
         "type": "string",
         "required": true,
@@ -178,6 +183,7 @@
       {
         "name": "ocp_cluster_domain",
         "label": "OCP Base Domain Name",
+        "default": "${openshift_container_platform_info.ocp_cluster_domain}",
         "type": "string",
         "description": "OCP Base Domain Name. The combination of cluster name and this domain name creates what a cluster domain, that will be used by OCP cluster nodes and the URLs.",
         "required": true,
@@ -189,6 +195,7 @@
       {
         "name": "ocp_vm_template",
         "label": "OCP Cluster VMs Template Name (RHCOS 4.2 image template)",
+        "default": "${openshift_container_platform_info.ocp_vm_template}",
         "type": "string",
         "description": "Name of the VM template to clone to create VMs for the cluster.",
         "required": true,
@@ -200,6 +207,7 @@
       {
         "name": "pullsecret",
         "label": "Base64 encoded OCP image pull secret",
+        "default": "${openshift_container_platform_info.pullsecret}",
         "type": "string",
         "description": "Base64 encoded OCP image pull secret. You can obtain this from your Red Hat account page.",
         "required": true,
@@ -217,7 +225,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.vm_clone_timeout}",
+        "default": "${openshift_container_platform_info.vm_clone_timeout}",
         "group_name": "openshift_container_platform_info"
       },
       {
@@ -229,7 +237,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.dns_servers}",
+        "default": "${openshift_container_platform_info.dns_servers}",
         "group_name": "openshift_container_platform_info"
       },
       {
@@ -241,12 +249,12 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${vsphere_managed_inventory_definition.dns_suffixes}",
+        "default": "${openshift_container_platform_info.vm_dns_suffixes}",
         "group_name": "openshift_container_platform_info"
       },
       {
         "name": "vm_domain_name",
-        "default":"${vsphere_managed_inventory_definition.vm_domain_name}",
+        "default":"${openshift_container_platform_info.vm_domain_name}",
         "description": "Virtual machine domain name.",
         "type": "string",
         "required": true,
@@ -258,7 +266,7 @@
       },
       {
         "name": "vm_folder",
-        "default":"${vsphere_managed_inventory_definition.vm_folder}",
+        "default":"${openshift_container_platform_info.vm_folder}",
         "description": "vSphere folder name to create the infrastructure virtual vachine.",
         "type": "string",
         "required": false,
@@ -271,6 +279,7 @@
       {
         "name": "vsphere_cluster",
         "label": "vSphere cluster Name",
+        "default":"${openshift_container_platform_info.vsphere_cluster}",
         "type": "string",
         "description": "Name of the vSphere cluster.",
         "required": true,
@@ -281,7 +290,7 @@
       },
       {
         "name": "vsphere_datacenter",
-        "default":"${vsphere_managed_inventory_definition.datacenter}",
+        "default":"${openshift_container_platform_info.vsphere_datacenter}",
         "description": "The name of a datacenter in which to create the virtual machine and other assets.",
         "type": "string",
         "required": true,
@@ -293,7 +302,7 @@
       },
       {
         "name": "vsphere_datastore",
-        "default":"${vsphere_managed_inventory_definition.datastore}",
+        "default":"${openshift_container_platform_info.vsphere_datastore}",
         "description": "Virtual machine datastore name",
         "type": "string",
         "required": true,
@@ -305,7 +314,7 @@
       },
       {
         "name": "vsphere_resource_pool",
-        "default":"${vsphere_managed_inventory_definition.resource_pool}",
+        "default":"${openshift_container_platform_info.vsphere_resource_pool}",
         "description": "Name of the default resource pool for the cluster. Must be specified as 'cluster_name/resource_pool'",
         "type": "string",
         "required": true,
