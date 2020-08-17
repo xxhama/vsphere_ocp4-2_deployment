@@ -330,7 +330,7 @@
       {
         "name": "master_ips",
         "label": "Master IPs",
-        "default":[],
+        "default":["1"],
         "type": "list",
         "description": "A list of ip addresses for the master nodes.",
         "required": true,
@@ -341,7 +341,7 @@
       },
       {
         "name": "worker_ips",
-        "default":[],
+        "default":["1"],
         "label": "Worker IPs",
         "type": "list",
         "description": "A list of ip addresses for the worker nodes.",
