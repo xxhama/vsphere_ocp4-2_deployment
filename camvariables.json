@@ -317,6 +317,7 @@
       },
       {
         "name": "bootstrap_ip",
+        "default":"",
         "description": "Ip Address for Bootstrap node'",
         "type": "string",
         "required": true,
@@ -329,6 +330,7 @@
       {
         "name": "master_ips",
         "label": "Master IPs",
+        "default":"",
         "type": "list",
         "description": "A list of ip addresses for the master nodes.",
         "required": true,
@@ -339,6 +341,7 @@
       },
       {
         "name": "worker_ips",
+        "default":"",
         "label": "Worker IPs",
         "type": "list",
         "description": "A list of ip addresses for the worker nodes.",
