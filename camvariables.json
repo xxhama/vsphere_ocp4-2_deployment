@@ -317,7 +317,6 @@
       },
       {
         "name": "bootstrap_ip",
-        "default":"${openshift_container_platform_info.bootstrap_ip}",
         "description": "Ip Address for Bootstrap node'",
         "type": "string",
         "required": true,
