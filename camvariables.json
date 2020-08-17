@@ -25,7 +25,6 @@
     "template_input_params": [{
       "name": "clustername",
       "label": "OCP Cluster Name",
-      "default": "${openshift_infra_node_on_vmware.clustername}",
       "type": "string",
       "description": "A unique name that identifies each OCP cluster. The combination of this cluster name and the OCP domain name creates a cluster domain, that will be used by OCP cluster nodes and the URLs.",
       "required": true,
@@ -79,7 +78,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.vm_ipv4_gateway}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_ipv4_gateway}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -91,7 +90,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.vm_ipv4_netmask}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_ipv4_prefix_length}",
         "regex": "^([8-9]|[1-2][0-9]|3[0-2])$",
         "regexdesc": "Provide an integer value between 1 and 32",
         "group_name": "openshift_infra_node_on_vmware"
@@ -105,7 +104,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.vm_os_user}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_os_user}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -117,7 +116,7 @@
         "secured": true,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.vm_os_password}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_os_password}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -129,7 +128,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.vm_image_template}",
+        "default": "${openshift_infra_node_on_vmware.infranode_vm_template}",
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
@@ -146,7 +145,7 @@
       },
       {
         "name": "vm_private_adapter_type",
-        "default":"${penshift_container_platform_info.adapter_type}",
+        "default":"${penshift_container_platform_info.vm_private_adapter_type}",
         "description": "Private Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
         "type": "string",
         "required": true,
@@ -170,7 +169,7 @@
       },
       {
         "name": "vsphere_datastore",
-        "default":"${openshift_container_platform_info.datastore}",
+        "default":"${openshift_container_platform_info.vsphere_datastore}",
         "description": "Virtual machine datastore name",
         "type": "string",
         "required": true,
@@ -237,7 +236,7 @@
         "secured": false,
         "hidden": false,
         "immutable": false,
-        "default": "${openshift_container_platform_info.dns_servers}",
+        "default": "${openshift_container_platform_info.vm_dns_servers}",
         "group_name": "openshift_container_platform_info"
       },
       {
@@ -296,18 +295,6 @@
         "required": true,
         "secured": false,
         "label": "Datacenter Name",
-        "hidden": false,
-        "immutable": false,
-        "group_name": "openshift_container_platform_info"
-      },
-      {
-        "name": "vsphere_datastore",
-        "default":"${openshift_container_platform_info.vsphere_datastore}",
-        "description": "Virtual machine datastore name",
-        "type": "string",
-        "required": true,
-        "secured": false,
-        "label": "Datastore Name",
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
