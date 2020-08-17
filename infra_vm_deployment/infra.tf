@@ -176,7 +176,7 @@ resource "null_resource" "add_ssh_key" {
       "set -e",
       "bash -c 'chmod +x VM_add_ssh_key.sh Add_Proxy.sh'",
       "bash -c './VM_add_ssh_key.sh  \"${var.vm_os_user}\" \"${var.vm_public_ssh_key}\" \"${var.vm_private_ssh_key}\">> VM_add_ssh_key.log 2>&1'",
-      "bash -c 'mv Add_Proxy.sh /etc/profile.d'",
+      //"bash -c 'mv Add_Proxy.sh /etc/profile.d'",
     ]
   }
 }
