@@ -59,7 +59,7 @@ resource "local_file" "install_config_yaml" {
 }
 
 resource "local_file" "append_ignition" {
-  content = data.template_file.install_config_yaml.rendered
+  content = data.template_file.append_ignition_template.rendered
   filename = "${local.installer_workspace}/append.ign"
   depends_on = [
     null_resource.download_binaries
