@@ -13,7 +13,6 @@ resource "null_resource" "create_lb_server" {
   connection {
     type                = "ssh"
     user                = var.vm_os_user
-    password            = var.vm_os_password
     private_key         = var.vm_os_private_key
     host                = var.vm_ipv4_address
   }

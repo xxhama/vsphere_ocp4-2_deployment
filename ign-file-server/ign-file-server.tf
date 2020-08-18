@@ -3,6 +3,7 @@ resource "null_resource" "copy_ign_file" {
   connection {
     type                = "ssh"
     private_key         = var.infra_private_key
+    user                = var.vm_os_user
     host                = var.infra_host
   }
 
