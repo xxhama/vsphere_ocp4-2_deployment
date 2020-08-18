@@ -19,7 +19,7 @@ platform:
     password: ${var.vsphere_password}
     datacenter: ${var.datacenter}
     defaultDatastore: ${var.datastore}
-pullSecret: '${base64decode(var.openshift_pull_secret)}'
+pullSecret: '${chomp(base64decode(var.openshift_pull_secret))}'
 sshKey: ${var.public_ssh_key}
 proxy:
     httpProxy: http://${var.proxy_host}
