@@ -75,7 +75,7 @@ module "deployVM_infranode" {
   vm_ipv4_prefix_length              = var.infranode_vm_ipv4_prefix_length
   vm_private_adapter_type            = var.vm_private_adapter_type
   vm_private_network_interface_label = var.vsphere_network
-  vm_disk1_datastore                 = var.infranode_vm_disk1_datastore
+  vm_disk1_datastore                 = var.vsphere_datastore
   vm_dns_servers                     = var.vm_dns_servers
   vm_dns_suffixes                    = var.vm_dns_suffixes
   vm_clone_timeout                   = var.vm_clone_timeout
@@ -91,7 +91,7 @@ module "ignition" {
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   datacenter                    = var.vsphere_datacenter
-  datastore                     = var.datastore_cluster
+  datastore                     = var.vsphere_datastore
   proxy_host                    = var.proxy_server
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
@@ -145,7 +145,7 @@ module "ocp-deployment" {
   folder                = var.vm_folder
   rhcos_template_path   = var.ocp_vm_template
   vsphere_datacenter    = var.vsphere_datacenter
-  vsphere_datastore     = var.datastore_cluster
+  vsphere_datastore     = var.vsphere_datastore
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
   domain_name           = var.vm_domain_name

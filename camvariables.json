@@ -58,18 +58,6 @@
         "group_name": "openshift_infra_node_on_vmware"
       },
       {
-        "name": "infranode_vm_disk1_datastore",
-        "label": "Infrastructure Node Disk 1 datastore name",
-        "type": "string",
-        "description": "Infrastructure Node Disk 1 datastore name.",
-        "required": true,
-        "secured": false,
-        "hidden": false,
-        "immutable": false,
-        "default": "${openshift_infra_node_on_vmware.infranode_vm_disk1_datastore}",
-        "group_name": "openshift_infra_node_on_vmware"
-      },
-      {
         "name": "infranode_vm_ipv4_gateway",
         "label": "Infrastructure Node IPv4 Gateway",
         "type": "string",
@@ -168,13 +156,13 @@
         "group_name": "openshift_container_platform_info"
       },
       {
-        "name": "datastore_cluster",
+        "name": "vsphere_datastore",
         "default":"${openshift_container_platform_info.vsphere_datastore}",
         "description": "Virtual machine datastore name",
         "type": "string",
         "required": true,
         "secured": false,
-        "label": "Datastore Cluster",
+        "label": "Datastore Name",
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"

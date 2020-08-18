@@ -65,10 +65,6 @@ variable "infranode_vm_ipv4_prefix_length" {
   type = string
 }
 
-variable "infranode_vm_disk1_datastore" {
-  type = string
-}
-
 variable "vm_private_adapter_type" {
   type = string
 }
@@ -101,6 +97,6 @@ variable "vm_folder" {
   type = string
 }
 
-variable "datastore_cluster" {
+variable "vsphere_datastore" {
   type = string
 }
