@@ -168,13 +168,13 @@
         "group_name": "openshift_container_platform_info"
       },
       {
-        "name": "vsphere_datastore",
+        "name": "datastore_cluster",
         "default":"${openshift_container_platform_info.vsphere_datastore}",
         "description": "Virtual machine datastore name",
         "type": "string",
         "required": true,
         "secured": false,
-        "label": "Datastore Name",
+        "label": "Datastore Cluster",
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"

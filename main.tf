@@ -91,7 +91,7 @@ module "ignition" {
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   datacenter                    = var.vsphere_datacenter
-  datastore                     = var.vsphere_datastore
+  datastore                     = var.datastore_cluster
   proxy_host                    = var.proxy_server
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
@@ -145,7 +145,7 @@ module "ocp-deployment" {
   folder                = var.vm_folder
   rhcos_template_path   = var.ocp_vm_template
   vsphere_datacenter    = var.vsphere_datacenter
-  vsphere_datastore     = var.vsphere_datastore
+  vsphere_datastore     = var.datastore_cluster
   vsphere_network       = var.vsphere_network
   vsphere_resource_pool = var.vsphere_resource_pool
   domain_name           = var.vm_domain_name

@@ -101,6 +101,6 @@ variable "vm_folder" {
   type = string
 }
 
-variable "vsphere_datastore" {
+variable "datastore_cluster" {
   type = string
 }
