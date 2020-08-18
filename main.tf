@@ -107,7 +107,7 @@ module "ign_file_server" {
   source = "./ign-file-server"
   infra_host = var.infranode_ip
   infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
-  ign_path = module.ignition.bootstrap_ignition_path
+  bootstrap_ign = module.ignition.bootstrap_ignition
 }
 
 // Module Configure LB

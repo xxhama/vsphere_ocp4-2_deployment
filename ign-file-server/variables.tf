@@ -6,9 +6,7 @@ variable "infra_private_key" {
   type = string
 }
 
-variable "ign_path" {
-  type = string
-}
+variable "bootstrap_ign" {}
 
 variable "dependsOn" {
   default     = "true"

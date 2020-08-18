@@ -7,7 +7,7 @@ resource "null_resource" "copy_ign_file" {
   }
 
   provisioner "file" {
-    source = "./installer-files/bootstrap.ign"
+    content = var.bootstrap_ign
     destination = "/tmp/ignition"
   }
   
