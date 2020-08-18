@@ -5,7 +5,10 @@ variable "infra_host" {
 variable "infra_private_key" {
   type = string
 }
-
+variable "vm_os_user" {
+  type        = string
+  description = "User for the Operating System User to access virtual machine"
+}
 variable "bootstrap_ign" {}
 
 variable "dependsOn" {

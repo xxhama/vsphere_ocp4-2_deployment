@@ -107,6 +107,7 @@ module "ign_file_server" {
   source = "./ign-file-server"
   infra_host = var.infranode_ip
   infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
+  vm_os_user                         = var.infranode_vm_os_user
   bootstrap_ign = module.ignition.bootstrap_ignition
 }
 
