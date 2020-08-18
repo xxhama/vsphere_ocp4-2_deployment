@@ -4,7 +4,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
 
   folder               = var.folder
   resource_pool_id     = data.vsphere_resource_pool.pool.id
-  datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
+  datacenter_id       = data.vsphere_datacenter.dc.id
 
   num_cpus             = 8
   memory               = 16384
@@ -56,7 +56,7 @@ resource "vsphere_virtual_machine" "masters" {
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
-  datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
+  datacenter_id       = data.vsphere_datacenter.dc.id
 
   num_cpus             = 16
   memory               = 65536
@@ -109,7 +109,7 @@ resource "vsphere_virtual_machine" "workers" {
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
-  datastore_cluster_id = data.vsphere_datastore_cluster.datastore_cluster.id
+  datacenter_id       = data.vsphere_datacenter.dc.id
 
   num_cpus             = 8
   memory               = 16384
