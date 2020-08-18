@@ -3,9 +3,9 @@
 # Install the HAProxy, depending upon the platform
 function install_haproxy() {
     echo "Installing HAProxy"
-    sudo yum -y install haproxy
+    yum -y install haproxy
     setsebool -P haproxy_connect_any=1
-    sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
+    cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
 	systemctl start haproxy
 }
 
