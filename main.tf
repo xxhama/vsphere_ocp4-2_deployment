@@ -91,7 +91,7 @@ module "ignition" {
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   datacenter                    = var.vsphere_datacenter
-  datastore                     = var.vsphere_datastore
+  datastore                     = var.vsphere_cluster
   proxy_host                    = var.proxy_server
   vcenter_url                   = local.vcenter
   vsphere_password              = local.vcenterpassword
