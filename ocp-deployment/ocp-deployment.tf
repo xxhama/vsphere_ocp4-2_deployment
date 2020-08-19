@@ -96,7 +96,7 @@ resource "vsphere_virtual_machine" "masters" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(var.master_ign[count.index])
+      "guestinfo.ignition.config.data" = base64encode(var.master_ign[count.index].content)
     }
   }
 }
@@ -148,7 +148,7 @@ resource "vsphere_virtual_machine" "workers" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(var.worker_ign[count.index])
+      "guestinfo.ignition.config.data" = base64encode(var.worker_ign[count.index].content)
     }
   }
 }
