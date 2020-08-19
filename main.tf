@@ -97,6 +97,11 @@ module "ignition" {
   vsphere_password              = local.vcenterpassword
   vsphere_user                  = local.vcenteruser
   infra_ip                      = var.infranode_ip
+  master_ips                    = var.master_ips
+  worker_ips                    = var.worker_ips
+  gateway                       = var.infranode_vm_ipv4_gateway
+  dns                           = var.vm_dns_servers
+  bootstrap_ip                  = var.bootstrap_ip
 }
 // Module config file server for ign
 //

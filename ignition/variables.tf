@@ -6,11 +6,28 @@ variable "base_domain" {
   type = string
 }
 
-variable "public_ssh_key" {
+variable "gateway" {
   type = string
 }
 
-variable "master_count" {
+variable "master_ips" {
+  type = list(string)
+}
+
+variable "worker_ips" {
+  type = list(string)
+}
+
+variable "dns" {
+  type = list(string)
+}
+
+variable "bootstrap_ip" {
+  type = string
+}
+
+
+variable "public_ssh_key" {
   type = string
 }
 
