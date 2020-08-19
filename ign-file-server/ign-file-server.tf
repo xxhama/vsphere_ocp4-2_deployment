@@ -17,6 +17,7 @@ resource "null_resource" "copy_ign_file" {
     inline = [
       "systemctl stop firewalld",
       "yum install httpd -y",
+      "sed -i -e "s/Listen 80/Listen 8080/" /etc/httpd/conf/httpd.conf",
       "systemctl start httpd",
       "ln -s /tmp/ignition /var/www/html"
     ]

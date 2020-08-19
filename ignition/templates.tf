@@ -34,7 +34,7 @@ data "template_file" "append_ignition_template" {
   "config": {
     "append": [
       {
-        "source": "http://${var.infra_ip}/ignition",
+        "source": "http://${var.infra_ip}:8080/ignition",
         "verification": {}
       }
     ]
