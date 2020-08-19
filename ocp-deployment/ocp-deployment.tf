@@ -14,17 +14,6 @@ resource "vsphere_virtual_machine" "bootstrap" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "bootstrap"
-      }
-
-      network_interface {
-        ipv4_address = var.bootstrap_ip
-      }
-    }
   }
 
   network_interface {
@@ -67,17 +56,6 @@ resource "vsphere_virtual_machine" "masters" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "master${count.index}"
-      }
-
-      network_interface {
-        ipv4_address = var.master_ips[count.index]
-      }
-    }
   }
 
   network_interface {
@@ -120,16 +98,6 @@ resource "vsphere_virtual_machine" "workers" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "worker${count.index}"
-      }
-
-      network_interface {
-        ipv4_address = var.master_ips[count.index]
-      }
-    }
   }
 
   network_interface {
