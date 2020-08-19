@@ -87,7 +87,7 @@ resource "null_resource" "inject_network_config_workers" {
   count = length(var.worker_ips)
   provisioner "local-exec" {
     command = <<EOF
-jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=.${var.worker_ips[count.index]}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign_modified
+jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=${var.worker_ips[count.index]}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign_modified
 EOF
   }
 }
@@ -97,7 +97,7 @@ resource "null_resource" "inject_network_config_masters" {
   count = length(var.master_ips)
   provisioner "local-exec" {
     command = <<EOF
-jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=.${var.master_ips[count.index]}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.ign_modified
+jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=${var.master_ips[count.index]}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.ign_modified
 EOF
   }
 }
@@ -106,7 +106,7 @@ resource "null_resource" "inject_network_config_append" {
   depends_on = [null_resource.generate_ignition]
   provisioner "local-exec" {
     command = <<EOF
-jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=.${var.bootstrap_ip}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/append.ign > ${local.installer_workspace}/append.ign_modified
+jq '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\\nName=ens192\\n\\n[Network]\\nAddress=${var.bootstrap_ip}\\nGateway=${var.gateway}\\nDNS=${var.dns[0]}\\n"}]' ${local.installer_workspace}/append.ign > ${local.installer_workspace}/append.ign_modified
 EOF
   }
 }
