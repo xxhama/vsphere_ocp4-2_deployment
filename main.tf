@@ -87,7 +87,6 @@ module "ignition" {
   cluster_name                  = var.clustername
   base_domain                   = var.vm_domain_name
   openshift_version             = var.openshift_version
-  master_count                  = length(var.master_ips)
   openshift_pull_secret         = var.pullsecret
   public_ssh_key                = chomp(tls_private_key.installkey.public_key_openssh)
   datacenter                    = var.vsphere_datacenter
