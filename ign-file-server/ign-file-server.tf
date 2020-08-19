@@ -19,8 +19,9 @@ resource "null_resource" "copy_ign_file" {
       "yum install httpd -y",
       "sed -i -e \"s/Listen 80/Listen 8080/\" /etc/httpd/conf/httpd.conf",
       "systemctl start httpd",
-      "chmod 775 /tmp/ignition",
-      "ln -s /tmp/ignition /var/www/html"
+      "mkdir /files"
+      "cp /tmp/ignition /files",
+      "ln -s /files/ignition /var/www/html"
     ]
   }
 }
