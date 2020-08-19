@@ -26,7 +26,6 @@ variable "bootstrap_ip" {
   type = string
 }
 
-
 variable "public_ssh_key" {
   type = string
 }
@@ -42,7 +41,7 @@ variable "openshift_installer_url" {
 
 variable "openshift_version" {
   type    = string
-  default = "latest"
+  default = "4.2.0"
 }
 
 variable "vcenter_url" {
