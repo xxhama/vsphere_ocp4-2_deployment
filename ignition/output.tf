@@ -3,11 +3,11 @@ output "append_ignition" {
 }
 
 output "master_ignition" {
-  value = data.local_file.master_ign.content
+  value = data.local_file.master_ign
 }
 
 output "worker_ignition" {
-  value = data.local_file.worker_ign.content
+  value = data.local_file.worker_ign
 }
 
 output "bootstrap_ignition" {

@@ -14,17 +14,6 @@ resource "vsphere_virtual_machine" "bootstrap" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "bootstrap"
-      }
-
-      network_interface {
-        ipv4_address = var.bootstrap_ip
-      }
-    }
   }
 
   network_interface {
@@ -43,7 +32,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(var.append_ign)
+      "guestinfo.ignition.config.data" = base64encode(chomp(var.append_ign))
     }
   }
 }
@@ -67,17 +56,6 @@ resource "vsphere_virtual_machine" "masters" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "master${count.index}"
-      }
-
-      network_interface {
-        ipv4_address = var.master_ips[count.index]
-      }
-    }
   }
 
   network_interface {
@@ -96,7 +74,7 @@ resource "vsphere_virtual_machine" "masters" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(var.master_ign)
+      "guestinfo.ignition.config.data" = base64encode(chomp(var.master_ign[count.index].content))
     }
   }
 }
@@ -120,16 +98,6 @@ resource "vsphere_virtual_machine" "workers" {
 
   clone {
     template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-    customize {
-      linux_options {
-        domain = "${var.clustername}.${var.domain_name}"
-        host_name = "worker${count.index}"
-      }
-
-      network_interface {
-        ipv4_address = var.master_ips[count.index]
-      }
-    }
   }
 
   network_interface {
@@ -148,7 +116,7 @@ resource "vsphere_virtual_machine" "workers" {
   vapp {
     properties = {
       "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(var.worker_ign)
+      "guestinfo.ignition.config.data" = base64encode(chomp(var.worker_ign[count.index].content))
     }
   }
 }

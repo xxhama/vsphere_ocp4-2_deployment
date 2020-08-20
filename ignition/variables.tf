@@ -6,11 +6,27 @@ variable "base_domain" {
   type = string
 }
 
-variable "public_ssh_key" {
+variable "gateway" {
   type = string
 }
 
-variable "master_count" {
+variable "master_ips" {
+  type = list(string)
+}
+
+variable "worker_ips" {
+  type = list(string)
+}
+
+variable "dns" {
+  type = list(string)
+}
+
+variable "bootstrap_ip" {
+  type = string
+}
+
+variable "public_ssh_key" {
   type = string
 }
 
@@ -25,7 +41,7 @@ variable "openshift_installer_url" {
 
 variable "openshift_version" {
   type    = string
-  default = "latest"
+  default = "4.2.0"
 }
 
 variable "vcenter_url" {
@@ -53,5 +69,9 @@ variable "infra_ip" {
 }
 
 variable "proxy_host" {
+  type = string
+}
+
+variable "network_prefix" {
   type = string
 }
