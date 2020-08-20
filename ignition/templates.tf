@@ -50,6 +50,55 @@ data "template_file" "append_ignition_template" {
 EOF
 }
 
+data "template_file" "ifcfg-master" {
+  count = length(var.master_ips)
+
+  template = <<EOF
+TYPE=Ethernet
+NAME="ens192"
+DEVICE="ens192"
+ONBOOT=yes
+NETBOOT=yes
+BOOTPROTO=none
+IPADDR="${var.master_ips[count.index]}"
+NETMASK="${cidrnetmask("${var.gateway}/${var.network_prefix}")}"
+GATEWAY="${var.gateway}"
+DNS1="${var.dns[0]}"
+EOF
+}
+
+data "template_file" "ifcfg-worker" {
+  count = length(var.worker_ips)
+
+  template = <<EOF
+TYPE=Ethernet
+NAME="ens192"
+DEVICE="ens192"
+ONBOOT=yes
+NETBOOT=yes
+BOOTPROTO=none
+IPADDR="${var.worker_ips[count.index]}"
+NETMASK="${cidrnetmask("${var.gateway}/${var.network_prefix}")}"
+GATEWAY="${var.gateway}"
+DNS1="${var.dns[0]}"
+EOF
+}
+
+data "template_file" "ifcfg-bootstrap" {
+  template = <<EOF
+TYPE=Ethernet
+NAME="ens192"
+DEVICE="ens192"
+ONBOOT=yes
+NETBOOT=yes
+BOOTPROTO=none
+IPADDR="${var.bootstrap_ip}"
+NETMASK="${cidrnetmask("${var.gateway}/${var.network_prefix}")}"
+GATEWAY="${var.gateway}"
+DNS1="${var.dns[0]}"
+EOF
+}
+
 resource "local_file" "install_config_yaml" {
   content  = data.template_file.install_config_yaml.rendered
   filename = "${local.installer_workspace}/install-config.yaml"

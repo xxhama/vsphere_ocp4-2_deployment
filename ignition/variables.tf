@@ -71,3 +71,7 @@ variable "infra_ip" {
 variable "proxy_host" {
   type = string
 }
+
+variable "network_prefix" {
+  type = string
+}
