@@ -20,3 +20,18 @@ variable "dependsOn" {
 variable "vm_os_private_key" {
   default = ""
 }
+
+variable "bootstrap_ip" {
+  type        = string
+  description = "Boostrap IP Address"
+}
+
+variable "master_ips" {
+  type        = list(string)
+  description = "Control Plane IP Addressess"
+}
+
+variable "worker_ips" {
+  type    = list(string)
+  description = "Compute IP Addressess"
+}
