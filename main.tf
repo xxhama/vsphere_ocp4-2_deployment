@@ -110,10 +110,12 @@ module "ign_file_server" {
   dependsOn = module.deployVM_infranode.dependsOn
 
   source = "./ign-file-server"
-  infra_host = var.infranode_ip
-  infra_private_key = chomp(tls_private_key.installkey.private_key_pem)
-  vm_os_user                         = var.infranode_vm_os_user
-  bootstrap_ign = module.ignition.bootstrap_ignition
+  infra_host                     = var.infranode_ip
+  infra_private_key              = chomp(tls_private_key.installkey.private_key_pem)
+  vm_os_user                     = var.infranode_vm_os_user
+  bootstrap_ign                  = module.ignition.bootstrap_ignition
+  master_igns                    = module.ignition.master_ignition
+  worker_igns                    = module.ignition.worker_ignition
 }
 
 // Module Configure LB
