@@ -107,7 +107,8 @@ resource "null_resource" "generateisos" {
       "sudo mv /tmp/govc /usr/local/bin/",
       "chmod +x /usr/local/bin/govc",
       "mkdir /install/",
-      "wget -c ${var.binaries["openshift_bios"]} -o /install/bios.raw.gz",
+      "wget -c ${var.binaries["openshift_bios"]} -o /install/bios.raw.gz"
+
 
     ]
   }
@@ -134,5 +135,14 @@ resource "null_resource" "generateisos" {
       "export GOVC_INSECURE=${var.vsphere_allow_insecure}",
       "govc datastore.rm -ds=${var.vsphere_image_datastore} ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
     ]
+  }
+}
+
+resource "null_resource" "images_created" {
+  depends_on = [
+    null_resource.generateisos
+  ]
+  provisioner "local-exec" {
+    command = "Iso images created'"
   }
 }
