@@ -66,7 +66,10 @@ resource "null_resource" "generate_manifests" {
   ]
 
   provisioner "local-exec" {
-    command = "${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests"
+    command = <<EOF
+cp ${local.installer_workspace}/install-config.yaml install-config.yaml.backup
+${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create manifests
+EOF
   }
 }
 

@@ -10,6 +10,8 @@ variable "vm_os_user" {
   description = "User for the Operating System User to access virtual machine"
 }
 variable "bootstrap_ign" {}
+variable "master_igns" {}
+variable "worker_igns" {}
 
 variable "dependsOn" {
   default     = "true"
