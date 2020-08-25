@@ -107,6 +107,7 @@ module "ignition" {
 //
 
 module "iso-creation"{
+  dependsOn = module.deployVM_infranode.dependsOn
 
   source                        = "./create_iso"
   binaries                      = var.binaries
@@ -133,7 +134,7 @@ module "iso-creation"{
 }
 
 module "ign_file_server" {
-  dependsOn = module.deployVM_infranode.dependsOn
+  dependsOn = module.iso-creation.dependsOn
 
   source = "./ign-file-server"
   infra_host                     = var.infranode_ip
@@ -152,7 +153,7 @@ module "ign_file_server" {
 // 2. Worker IPs
 // 3. Bootstrap IP
 module "haproxy" {
-  dependsOn = module.deployVM_infranode.dependsOn
+  dependsOn = module.ign_file_server.dependsOn
 
   source                        = "./config_lb_server"
   vm_os_user                    = var.infranode_vm_os_user
@@ -170,7 +171,7 @@ module "haproxy" {
 // 3. append-bootstrap.ign
 
 module "ocp-deployment" {
-  dependsOn = module.ign_file_server.dependsOn
+  dependsOn = module.haproxy.dependsOn
 
   source                = "./ocp-deployment"
   master_ign            = module.ignition.master_ignition

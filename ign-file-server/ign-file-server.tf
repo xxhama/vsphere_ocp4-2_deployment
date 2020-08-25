@@ -85,7 +85,8 @@ resource "null_resource" "expose_ign_files" {
 
   provisioner "remote-exec" {
     inline = [
-      "ln -s /opt/igns /var/www/html"
+      "ln -s /opt/igns /var/www/html",
+      "ln -s /install/bios.raw.gz /var/www/html/install/bios.raw.gz"
     ]
   }
 }
