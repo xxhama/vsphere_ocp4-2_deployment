@@ -168,6 +168,30 @@
         "group_name": "openshift_container_platform_info"
       },
       {
+        "name": "vsphere_image_datastore",
+        "default":"${openshift_container_platform_info.vsphere_image_datastore}",
+        "description": "Datastore used for ISO images",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "Iso image Datastore Name",
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "vsphere_image_datastore_path",
+        "default":"${openshift_container_platform_info.vsphere_image_datastore_path}",
+        "description": "Path inside of the image datasore to store iso images",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "ISO Datastore path",
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
         "name": "ocp_cluster_domain",
         "label": "OCP Base Domain Name",
         "default": "${openshift_container_platform_info.ocp_cluster_domain}",
