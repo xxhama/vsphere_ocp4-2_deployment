@@ -109,26 +109,26 @@ module "ignition" {
 module "iso-creation"{
 
   source                        = "./create_iso"
-  binaries              = var.binaries
-  bootstrap_ip = var.bootstrap_ip
-  master_ips = var.master_ips
-  worker_ips = var.master_ips
-  infranode_ip = var.infranode_ip
-  username = var.infranode_vm_os_user
-  ssh_private_key = chomp(tls_private_key.installkey.public_key_openssh)
-  network_device = var.vsphere_network
-  ocp_cluster = var.clustername
-  base_domain = var.vm_domain_name
-  netmask = "${cidrnetmask("${var.infranode_vm_ipv4_gateway}/${var.infranode_vm_ipv4_prefix_length}")}"
-  gateway = var.infranode_vm_ipv4_gateway
-  openshift_nameservers = var.vm_dns_servers
+  binaries                      = var.binaries
+  bootstrap_ip                  = var.bootstrap_ip
+  master_ips                    = var.master_ips
+  worker_ips                    = var.master_ips
+  infranode_ip                  = var.infranode_ip
+  username                      = var.infranode_vm_os_user
+  ssh_private_key               = chomp(tls_private_key.installkey.public_key_openssh)
+  network_device                = var.vsphere_network
+  ocp_cluster                   = var.clustername
+  base_domain                   = var.vm_domain_name
+  netmask                       = "${cidrnetmask("${var.infranode_vm_ipv4_gateway}/${var.infranode_vm_ipv4_prefix_length}")}"
+  gateway                       = var.infranode_vm_ipv4_gateway
+  openshift_nameservers         = var.vm_dns_servers
 
-  vsphere_url = local.vcenter
-  vsphere_username = local.vcenteruser
-  vsphere_allow_insecure = "true"
-  vsphere_image_datastore = var.vsphere_image_datastore
-  vsphere_image_datastore_path = var.vsphere_image_datastore_path
-  vsphere_password = local.vcenterpassword
+  vsphere_url                   = local.vcenter
+  vsphere_username              = local.vcenteruser
+  vsphere_allow_insecure        = "true"
+  vsphere_image_datastore       = var.vsphere_image_datastore
+  vsphere_image_datastore_path  = var.vsphere_image_datastore_path
+  vsphere_password              = local.vcenterpassword
 
 }
 
