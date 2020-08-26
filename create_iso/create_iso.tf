@@ -6,7 +6,7 @@ resource "null_resource" "dependency" {
 
 
 locals {
-  all_hostnames = concat(var.bootstrap, list(var.masters), list(var.workers))
+  all_hostnames = concat(list(var.bootstrap), list(var.masters), list(var.workers))
   all_ips       = concat(list(var.bootstrap_ip), var.master_ips, var.worker_ips)
   all_count     = 7
   all_type = concat(
