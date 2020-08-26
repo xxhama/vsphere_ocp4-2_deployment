@@ -160,7 +160,7 @@ module "haproxy" {
   vm_os_password                = var.infranode_vm_os_password
   vm_os_private_key             = chomp(tls_private_key.installkey.private_key_pem)
   vm_ipv4_address               = var.infranode_ip
-  bootstrap_ip                  = var.bootstap_ip
+  bootstrap_ip                  = var.bootstrap_ip
   master_ips                    = var.master_ips
   worker_ips                    = var.worker_ips
 }
