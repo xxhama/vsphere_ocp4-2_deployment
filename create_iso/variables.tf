@@ -77,3 +77,18 @@ variable "vsphere_image_datastore" {
 variable "vsphere_image_datastore_path" {
   type = string
 }
+
+variable "bootstrap"{
+  type = string
+  default = "bootstrap"
+}
+
+variable "masters"{
+  type = list(string)
+  default = ["master0", "master1", "master2"]
+}
+
+variable "workers"{
+  type = list(string)
+  default = ["worker0", "worker1", "worker2"]
+}

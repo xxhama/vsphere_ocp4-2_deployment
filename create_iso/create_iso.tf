@@ -1,12 +1,12 @@
 resource "null_resource" "dependency" {
   triggers = {
-    all_dependencies = join(",", var.dependson)
+    all_dependencies = join(",", var.dependsOn)
   }
 }
 
 
 locals {
-  all_hostnames = concat("bootstrap", "master0", "master1", "master2" , "worker0", "worker1", "worker2")
+  all_hostnames = concat(var.bootstrap, list(var.masters), list(var.workers))
   all_ips       = concat(list(var.bootstrap_ip), var.master_ips, var.worker_ips)
   all_count     = 7
   all_type = concat(
