@@ -6,7 +6,7 @@ resource "null_resource" "dependency" {
 
 
 locals {
-  all_hostnames = concat(list(var.bootstrap), list(var.masters), list(var.workers))
+  all_hostnames = concat(list(var.bootstrap), var.masters, var.workers)
   all_ips       = concat(list(var.bootstrap_ip), var.master_ips, var.worker_ips)
   all_count     = 7
   all_type = concat(
@@ -82,9 +82,9 @@ resource "null_resource" "downloadiso" {
 
 resource "null_resource" "generateisos" {
   triggers = {
-    master_hostnames  = join(",", "master0", "master1", "master2")
+    master_hostnames  = join(",", var.masters)
     master_ips        = join(",", var.master_ips)
-    worker_hostnames  = join(",", "worker0", "worker1", "worker2")
+    worker_hostnames  = join(",", var.workers)
     worker_ips        = join(",", var.worker_ips)
 
   }
