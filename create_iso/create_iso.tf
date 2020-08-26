@@ -76,7 +76,7 @@ resource "null_resource" "downloadiso" {
   }
 }
   locals {
-    coreos_netmask = cidrnetmask("${var.infranode_ip}/${var.netmask}")
+    coreos_netmask = var.netmask
     nameservers    = join(" ", formatlist("nameserver=%v", var.openshift_nameservers))
   }
 
