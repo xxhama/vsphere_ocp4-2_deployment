@@ -31,8 +31,8 @@ resource "null_resource" "create_lb_server" {
     inline = [
       "set -e",
       "chmod +x /tmp/setup_lb.sh",
-      "bash -c '/tmp/setup_lb.sh' ",
-    ]
+      "bash -c '/tmp/setup_lb.sh ${var.bootstrap_ip} ${var.master_ips} ${var.worker_ips}'",
+    ]   
   }
 }
  
