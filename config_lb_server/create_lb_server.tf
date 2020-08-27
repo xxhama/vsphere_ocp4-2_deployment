@@ -38,8 +38,7 @@ resource "null_resource" "create_lb_server" {
  
 resource "null_resource" "lb_server_create" {
   depends_on = [
-    null_resource.create_lb_server,
-    #null_resource.create_lb_server_dependsOn
+    null_resource.create_lb_server
   ]
   provisioner "local-exec" {
     command = "echo 'HAPRoxy LB server created'"
