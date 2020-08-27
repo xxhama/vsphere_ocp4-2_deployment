@@ -1,4 +1,15 @@
+resource "null_resource" "dependency" {
+  triggers = {
+    all_dependencies = join(",", var.dependsOn)
+  }
+}
+
 resource "null_resource" "configure_apache_server" {
+
+  depends_on = [
+    null_resource.dependency
+  ]
+
   connection {
     type = "ssh"
     private_key = var.infra_private_key

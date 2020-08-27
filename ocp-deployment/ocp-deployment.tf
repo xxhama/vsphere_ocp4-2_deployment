@@ -1,5 +1,16 @@
+
+resource "null_resource" "dependency" {
+  triggers = {
+    all_dependencies = join(",", var.dependsOn)
+  }
+}
+
 // Resources to create
 resource "vsphere_virtual_machine" "bootstrap" {
+
+  depends_on = [
+    null_resource.dependency
+  ]
   name                 = "bootstrap"
 
   folder               = var.folder
