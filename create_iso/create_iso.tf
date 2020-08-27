@@ -146,6 +146,6 @@ resource "null_resource" "images_created" {
     null_resource.generateisos
   ]
   provisioner "local-exec" {
-    command = "Iso images created"
+    command = "echo 'Iso images created'"
   }
 }
