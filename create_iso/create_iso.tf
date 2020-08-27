@@ -9,6 +9,7 @@ locals {
   all_hostnames = concat(list(var.bootstrap), var.masters, var.workers)
   all_ips       = concat(list(var.bootstrap_ip), var.master_ips, var.worker_ips)
   all_count     = 7
+  esc_pass      = replace(var.vsphere_password,"!", "\\!")
   all_type = concat(
   data.template_file.bootstrap_type.*.rendered,
   data.template_file.master_type.*.rendered,
@@ -115,6 +116,8 @@ resource "null_resource" "generateisos" {
     private_key = var.ssh_private_key
   }
 
+  ESCAPED= var.vsphere_password
+
 
   provisioner "remote-exec" {
     inline = [
@@ -123,7 +126,7 @@ resource "null_resource" "generateisos" {
       "mkisofs -o /tmp/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso -rational-rock -J -joliet-long -eltorito-boot isolinux/isolinux.bin -eltorito-catalog isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table /tmp/${local.all_hostnames[count.index]} > /dev/null 2>&1",
       "export GOVC_URL=${var.vsphere_url}",
       "export GOVC_USERNAME=${var.vsphere_username}",
-      "export GOVC_PASSWORD=${var.vsphere_password}",
+      "export GOVC_PASSWORD=${local.esc_pass}",
       "export GOVC_INSECURE=${var.vsphere_allow_insecure}",
       "govc datastore.upload -ds=${var.vsphere_image_datastore} /tmp/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
     ]
@@ -134,7 +137,7 @@ resource "null_resource" "generateisos" {
     inline = [
       "export GOVC_URL=${var.vsphere_url}",
       "export GOVC_USERNAME=${var.vsphere_username}",
-      "export GOVC_PASSWORD=${var.vsphere_password}",
+      "export GOVC_PASSWORD=${local.esc_pass}",
       "export GOVC_INSECURE=${var.vsphere_allow_insecure}",
       "govc datastore.rm -ds=${var.vsphere_image_datastore} ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
     ]
