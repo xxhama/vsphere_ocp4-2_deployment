@@ -20,6 +20,9 @@ variable "append_ign" {}
 variable "domain_name" {}
 variable "clustername" {}
 
+// ISO Info
+variable "iso_folder" {}
+
 // Data objects
 data "vsphere_datacenter" "dc" {
   name = var.vsphere_datacenter
