@@ -6,15 +6,11 @@ resource "vsphere_virtual_machine" "bootstrap" {
   resource_pool_id     = data.vsphere_resource_pool.pool.id
   datastore_id         = data.vsphere_datastore.datastore.id
 
-  num_cpus             = 8
+  num_cpus             = 4
   memory               = 16384
   guest_id             = data.vsphere_virtual_machine.master-worker-template.guest_id
   scsi_type            = data.vsphere_virtual_machine.master-worker-template.scsi_type
   enable_disk_uuid     = true
-
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-  }
 
   network_interface {
     network_id        = data.vsphere_network.network.id
@@ -29,11 +25,9 @@ resource "vsphere_virtual_machine" "bootstrap" {
     keep_on_remove   = false
   }
 
-  vapp {
-    properties = {
-      "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(chomp(var.append_ign))
-    }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path         = "${var.iso_folder}/${var.clustername}-bootstrap.iso"
   }
 }
 
@@ -41,7 +35,7 @@ resource "vsphere_virtual_machine" "masters" {
   count = length(var.master_ips)
   depends_on = [vsphere_virtual_machine.bootstrap]
 
-  name                 = "master${count.index}"
+  name                 = "master-${count.index}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -54,10 +48,6 @@ resource "vsphere_virtual_machine" "masters" {
   enable_disk_uuid     = true
   wait_for_guest_ip_timeout = 10
 
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-  }
-
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
@@ -71,11 +61,9 @@ resource "vsphere_virtual_machine" "masters" {
     keep_on_remove   = false
   }
 
-  vapp {
-    properties = {
-      "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(chomp(var.master_ign[count.index].content))
-    }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path         = "${var.iso_folder}/${var.clustername}-master${count.index}.iso"
   }
 }
 
@@ -83,7 +71,7 @@ resource "vsphere_virtual_machine" "workers" {
   count = length(var.master_ips)
   depends_on = [vsphere_virtual_machine.masters]
 
-  name                 = "worker${count.index}"
+  name                 = "worker-${count.index}"
   folder               = var.folder
 
   resource_pool_id     = data.vsphere_resource_pool.pool.id
@@ -96,10 +84,6 @@ resource "vsphere_virtual_machine" "workers" {
   enable_disk_uuid     = true
   wait_for_guest_ip_timeout = 15
 
-  clone {
-    template_uuid    = data.vsphere_virtual_machine.master-worker-template.id
-  }
-
   network_interface {
     network_id        = data.vsphere_network.network.id
     adapter_type      = data.vsphere_virtual_machine.master-worker-template.network_interface_types[0]
@@ -113,11 +97,9 @@ resource "vsphere_virtual_machine" "workers" {
     keep_on_remove   = false
   }
 
-  vapp {
-    properties = {
-      "guestinfo.ignition.config.data.encoding" = "base64"
-      "guestinfo.ignition.config.data" = base64encode(chomp(var.worker_ign[count.index].content))
-    }
+  cdrom {
+    datastore_id = data.vsphere_datastore.datastore.id
+    path = "${var.iso_folder}/${var.clustername}-worker${count.index}.iso"
   }
 }
 
