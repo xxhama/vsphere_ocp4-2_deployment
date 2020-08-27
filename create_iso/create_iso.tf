@@ -115,9 +115,7 @@ resource "null_resource" "generateisos" {
     user        = var.username
     private_key = var.ssh_private_key
   }
-
-  ESCAPED= var.vsphere_password
-
+  
 
   provisioner "remote-exec" {
     inline = [
