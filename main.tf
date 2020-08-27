@@ -116,7 +116,7 @@ module "iso-creation"{
   worker_ips                    = var.master_ips
   infranode_ip                  = var.infranode_ip
   username                      = var.infranode_vm_os_user
-  ssh_private_key               = chomp(tls_private_key.installkey.public_key_openssh)
+  ssh_private_key               = chomp(tls_private_key.installkey.private_key_pem)
   network_device                = var.vsphere_network
   ocp_cluster                   = var.clustername
   base_domain                   = var.vm_domain_name
