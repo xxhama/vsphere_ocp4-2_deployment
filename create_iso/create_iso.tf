@@ -64,6 +64,7 @@ resource "null_resource" "downloadiso" {
 
   provisioner "remote-exec" {
     inline = [
+      "yum install -y wget",
       "curl -sL -o /tmp/installer.iso ${var.binaries["openshift_iso"]}",
       "test -e /tmp/tempiso || mkdir /tmp/tempiso",
       "sudo mount /tmp/installer.iso /tmp/tempiso",
@@ -101,7 +102,6 @@ resource "null_resource" "generateisos" {
 
   provisioner "remote-exec" {
     inline = [
-      "yum install -y wget",
       "curl -sL -o /tmp/govc.gz ${var.binaries["govc"]}",
       "gunzip /tmp/govc.gz",
       "sudo chmod 755 /tmp/govc",
