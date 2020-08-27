@@ -75,6 +75,20 @@ resource "null_resource" "downloadiso" {
       "sed -i 's/default vesamenu.c32/default linux/g' /tmp/iso/isolinux/isolinux.cfg"
     ]
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl -sL -o /tmp/govc.gz ${var.binaries["govc"]}",
+      "gunzip /tmp/govc.gz",
+      "sudo chmod 755 /tmp/govc",
+      "sudo mv /tmp/govc /usr/local/bin/",
+      "chmod +x /usr/local/bin/govc",
+      "mkdir /install/",
+      "wget -c ${var.binaries["openshift_bios"]} -o /install/bios.raw.gz"
+
+
+    ]
+  }
 }
   locals {
     coreos_netmask = var.netmask
@@ -100,19 +114,6 @@ resource "null_resource" "generateisos" {
     private_key = var.ssh_private_key
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "curl -sL -o /tmp/govc.gz ${var.binaries["govc"]}",
-      "gunzip /tmp/govc.gz",
-      "sudo chmod 755 /tmp/govc",
-      "sudo mv /tmp/govc /usr/local/bin/",
-      "chmod +x /usr/local/bin/govc",
-      "mkdir /install/",
-      "wget -c ${var.binaries["openshift_bios"]} -o /install/bios.raw.gz"
-
-
-    ]
-  }
 
   provisioner "remote-exec" {
     inline = [
