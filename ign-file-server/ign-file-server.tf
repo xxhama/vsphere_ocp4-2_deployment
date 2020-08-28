@@ -99,7 +99,9 @@ resource "null_resource" "expose_ign_files" {
       "ln -s /opt/igns /var/www/html",
       "chmod 775 /install/*",
       "ln -s /install /var/www/html",
-      "chcon -R --reference=/var/www /install"
+      "set +e",
+      "chcon -R --reference=/var/www /install",
+      "set -e"
     ]
   }
 }
