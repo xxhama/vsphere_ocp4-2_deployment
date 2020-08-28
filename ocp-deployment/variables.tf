@@ -22,6 +22,7 @@ variable "clustername" {}
 
 // ISO Info
 variable "iso_folder" {}
+variable "iso_datastore" {}
 
 // Data objects
 data "vsphere_datacenter" "dc" {
@@ -30,6 +31,9 @@ data "vsphere_datacenter" "dc" {
 data "vsphere_datastore" "datastore" {
   name          = var.vsphere_datastore 
   datacenter_id = data.vsphere_datacenter.dc.id
+}
+data "vsphere_datastore" "iso_datastore" {
+  name = var.iso_datastore
 }
 
 data "vsphere_resource_pool" "pool" {

@@ -37,7 +37,7 @@ resource "vsphere_virtual_machine" "bootstrap" {
   }
 
   cdrom {
-    datastore_id = data.vsphere_datastore.datastore.id
+    datastore_id = data.vsphere_datastore.iso_datastore.id
     path         = "${var.iso_folder}/${var.clustername}-bootstrap-0.iso"
   }
 }
