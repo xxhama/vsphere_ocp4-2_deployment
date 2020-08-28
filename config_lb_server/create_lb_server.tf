@@ -1,8 +1,7 @@
 
 resource "null_resource" "create_lb_server_dependsOn" {
-  provisioner "local-exec" {
-    # Hack to force dependencies to work correctly. Must use the dependsOn var somewhere in the code for dependencies to work. Contain value which comes from previous module.
-    command = "echo 'The dependsOn output for lb server module is ${var.dependsOn}'"
+  triggers = {
+    all_dependencies = join(",", var.dependsOn)
   }
 }
 

@@ -17,6 +17,7 @@ variable "dependsOn" {
   default     = "true"
   description = "Boolean for dependency"
 }
+
 variable "vm_os_private_key" {
   default = ""
 }
