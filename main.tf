@@ -193,4 +193,5 @@ module "ocp-deployment" {
   domain_name           = var.vm_domain_name
   clustername           = var.clustername
   iso_folder            = var.vsphere_image_datastore_path
+  iso_datastore         = var.vsphere_image_datastore
 }
