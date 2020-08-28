@@ -137,7 +137,7 @@ resource "null_resource" "generateisos" {
       "export GOVC_USERNAME=${var.vsphere_username}",
       "export GOVC_PASSWORD=${local.esc_pass}",
       "export GOVC_INSECURE=${var.vsphere_allow_insecure}",
-      "govc datastore.rm -ds=${var.vsphere_image_datastore} ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
+      "govc datastore.rm -ds=${var.vsphere_image_datastore} -dc=${var.vsphere_data_center} ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
     ]
   }
 }

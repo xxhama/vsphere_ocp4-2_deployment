@@ -74,6 +74,10 @@ variable "vsphere_image_datastore" {
   type = string
 }
 
+variable "vsphere_data_center"{
+  type = string
+}
+
 variable "vsphere_image_datastore_path" {
   type = string
 }
