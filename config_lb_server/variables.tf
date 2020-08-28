@@ -29,10 +29,10 @@ variable "bootstrap_ip" {
 
 variable "master_ips" {
   type        = list(string)
-  description = "Control Plane IP Addressess"
+  description = "Control Plane IP Addresses"
 }
 
 variable "worker_ips" {
   type    = list(string)
-  description = "Compute IP Addressess"
+  description = "Compute IP Addresses"
 }
