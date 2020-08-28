@@ -97,9 +97,9 @@ resource "null_resource" "expose_ign_files" {
   provisioner "remote-exec" {
     inline = [
       "ln -s /opt/igns /var/www/html",
-      "mkdir /var/www/html/install",
       "chmod 775 /install/*",
-      "ln -s /install/* /var/www/html/install"
+      "ln -s /install /var/www/html",
+      "chcon -R --reference=/var/www /install"
     ]
   }
 }
