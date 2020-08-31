@@ -120,8 +120,7 @@ resource "null_resource" "generateisos" {
   provisioner "remote-exec" {
     inline = [
       "cp -Rp /tmp/iso /tmp/${local.all_hostnames[count.index]}",
-      "sed -i 's/coreos.inst=yes/coreos.inst=yes ip=${local.all_ips[count.index]}::${var.gateway}:${local.coreos_netmask}:${local.all_hostnames[count.index]}.${var.ocp_cluster}.${var.base_domain}:${var.network_device}:none ${local.nameservers} coreos.inst.install_dev=sda coreos.inst.image_url=http:\\/\\/${var.infranode_ip}:8080\\/install\\/bios.raw.gz coreos.inst.ignition_url=http:\\/\\/${var.infranode_ip}:8080\\/igns\\/${local.all_hostnames[count.index]}.ign/g' /tmp/${local.all_hostnames[count.index]}/isolinux/isolinux.cfg",
-      "echo ' '",
+      "sed -i 's/coreos.inst=yes/coreos.inst=yes ip=${local.all_ips[count.index]}::${var.gateway}:${local.coreos_netmask}:${local.all_hostnames[count.index]}.${var.ocp_cluster}.${var.base_domain}:ens192:none ${local.nameservers} coreos.inst.install_dev=sda coreos.inst.image_url=http:\\/\\/${var.infranode_ip}:8080\\/install\\/bios.raw.gz coreos.inst.ignition_url=http:\\/\\/${var.infranode_ip}:8080\\/igns\\/${local.all_hostnames[count.index]}.ign/g' /tmp/${local.all_hostnames[count.index]}/isolinux/isolinux.cfg",
       "mkisofs -o /tmp/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso -rational-rock -J -joliet-long -eltorito-boot isolinux/isolinux.bin -eltorito-catalog isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table /tmp/${local.all_hostnames[count.index]} > /dev/null 2>&1",
       "export GOVC_URL=${var.vsphere_url}",
       "export GOVC_USERNAME=${var.vsphere_username}",
@@ -130,6 +129,7 @@ resource "null_resource" "generateisos" {
       "govc datastore.upload -ds=${var.vsphere_image_datastore} -dc=${var.vsphere_data_center} /tmp/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso ${var.vsphere_image_datastore_path}/${var.ocp_cluster}-${local.all_type[count.index]}-${local.all_index[count.index]}.iso  > /dev/null 2>&1"
     ]
   }
+
 
   provisioner "remote-exec" {
     when = destroy

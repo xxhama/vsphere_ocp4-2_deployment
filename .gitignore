@@ -1,3 +1,6 @@
 terraform.tfstate
 terraform.tfstate.backup
 .terraform
+.idea/modules.xml
+*.xml
+.idea/vsphere_ocp4-2_deployment.iml
