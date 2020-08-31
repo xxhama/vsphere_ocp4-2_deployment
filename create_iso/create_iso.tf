@@ -86,7 +86,7 @@ resource "null_resource" "downloadiso" {
       "sudo mv /tmp/govc /usr/local/bin/",
       "chmod +x /usr/local/bin/govc",
       "mkdir /install/",
-      "wget -c ${var.binaries["openshift_bios"]} -o /install/bios.raw.gz"
+      "curl -sL -o /install/bios.raw.gz ${var.binaries["openshift_bios"]} "
 
 
     ]
