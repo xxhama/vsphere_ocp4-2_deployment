@@ -74,7 +74,7 @@ resource "vsphere_virtual_machine" "masters" {
 
   cdrom {
     datastore_id = data.vsphere_datastore.datastore.id
-    path         = "${var.iso_folder}/${var.clustername}-master${count.index}.iso"
+    path         = "${var.iso_folder}/${var.clustername}-master-${count.index}.iso"
   }
 }
 
@@ -110,7 +110,7 @@ resource "vsphere_virtual_machine" "workers" {
 
   cdrom {
     datastore_id = data.vsphere_datastore.datastore.id
-    path = "${var.iso_folder}/${var.clustername}-worker${count.index}.iso"
+    path = "${var.iso_folder}/${var.clustername}-worker-${count.index}.iso"
   }
 }
 
