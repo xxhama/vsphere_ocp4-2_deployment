@@ -79,7 +79,7 @@ resource "vsphere_virtual_machine" "masters" {
 }
 
 resource "vsphere_virtual_machine" "workers" {
-  count = length(var.master_ips)
+  count = length(var.worker_ips)
   depends_on = [vsphere_virtual_machine.masters]
 
   name                 = "worker-${count.index}"
