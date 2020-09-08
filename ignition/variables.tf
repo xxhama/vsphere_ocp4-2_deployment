@@ -41,7 +41,7 @@ variable "openshift_installer_url" {
 
 variable "openshift_version" {
   type    = string
-  default = "4.2.0"
+  default = "latest-4.2"
 }
 
 variable "vcenter_url" {
