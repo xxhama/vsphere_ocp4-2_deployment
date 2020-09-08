@@ -113,7 +113,7 @@ module "iso-creation"{
   binaries                      = var.binaries
   bootstrap_ip                  = var.bootstrap_ip
   master_ips                    = var.master_ips
-  worker_ips                    = var.master_ips
+  worker_ips                    = var.worker_ips
   infranode_ip                  = var.infranode_ip
   username                      = var.infranode_vm_os_user
   ssh_private_key               = chomp(tls_private_key.installkey.private_key_pem)
