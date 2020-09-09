@@ -75,7 +75,7 @@ resource "null_resource" "copy_master-igns" {
 
   provisioner "file" {
     content = var.master_ign[count.index].content
-    destination = "/opt/igns/worker${count.index}.ign"
+    destination = "/opt/igns/master${count.index}.ign"
   }
 }
 
