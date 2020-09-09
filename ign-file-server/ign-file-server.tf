@@ -106,6 +106,8 @@ resource "null_resource" "expose_ign_files" {
   }
 }
 
+
+
 resource "null_resource" "web_server_created" {
   depends_on = [
     null_resource.expose_ign_files
