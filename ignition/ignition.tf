@@ -91,7 +91,7 @@ resource "null_resource" "create_master_igns" {
 
   provisioner "local-exec" {
     command = <<EOF
-cp ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign
+cp ${local.installer_workspace}/master.ign ${local.installer_workspace}/master${count.index}.ign
 EOF
   }
 }
@@ -102,7 +102,7 @@ resource "null_resource" "create_worker_igns" {
 
   provisioner "local-exec" {
     command = <<EOF
-cp ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker{count.index}.ign
+cp ${local.installer_workspace}/worker.ign ${local.installer_workspace}/worker{count.index}.ign
 EOF
   }
 }
