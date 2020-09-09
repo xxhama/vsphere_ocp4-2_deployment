@@ -146,6 +146,7 @@ data "local_file" "kubeadmin_password" {
 
 data "local_file" "master_igns" {
   depends_on = [null_resource.create_master_igns]
+  count = length(var.master_ips)
   filename = "${local.installer_workspace}/master${count.index}.ign"
 }
 
