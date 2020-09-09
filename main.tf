@@ -142,8 +142,8 @@ module "ign_file_server" {
   infra_private_key              = chomp(tls_private_key.installkey.private_key_pem)
   vm_os_user                     = var.infranode_vm_os_user
   bootstrap_ign                  = module.ignition.bootstrap_ignition
-  master_ign                    = module.ignition.master_ignition
-  worker_ign                    = module.ignition.worker_ignition
+  master_ign                    = module.ignition.master_ignitions
+  worker_ign                    = module.ignition.worker_ignitions
 }
 
 
@@ -178,8 +178,8 @@ module "ocp-deployment" {
   dependsOn = [module.haproxy.dependsOn]
 
   source                = "./ocp-deployment"
-  master_ign            = module.ignition.master_ignition
-  worker_ign            = module.ignition.worker_ignition
+  master_ign            = module.ignition.master_ignitions
+  worker_ign            = module.ignition.worker_ignitions
   append_ign            = module.ignition.append_ignition
   bootstrap_ip          = var.bootstrap_ip
   master_ips            = var.master_ips

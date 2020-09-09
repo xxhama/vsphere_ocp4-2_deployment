@@ -85,6 +85,28 @@ EOF
   }
 }
 
+resource "null_resource" "create_master_igns" {
+  depends_on = [null_resource.generate_ignition]
+  count = length(var.master_ips)
+
+  provisioner "local-exec" {
+    command = <<EOF
+cp ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign
+EOF
+  }
+}
+
+resource "null_resource" "create_worker_igns" {
+  depends_on = [null_resource.generate_ignition]
+  count = length(var.worker_ips)
+
+  provisioner "local-exec" {
+    command = <<EOF
+cp ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker{count.index}.ign
+EOF
+  }
+}
+
 //resource "null_resource" "inject_network_config_workers" {
 //  depends_on = [null_resource.generate_ignition]
 //  count = length(var.worker_ips)
@@ -122,9 +144,9 @@ data "local_file" "kubeadmin_password" {
   filename = "${local.installer_workspace}/auth/kubeadmin-password"
 }
 
-data "local_file" "master_ign" {
-  depends_on = [null_resource.generate_ignition]
-  filename = "${local.installer_workspace}/master.ign"
+data "local_file" "master_igns" {
+  depends_on = [null_resource.create_master_igns]
+  filename = "${local.installer_workspace}/master${count.index}.ign"
 }
 
 data "local_file" "append_ign" {
@@ -132,9 +154,10 @@ data "local_file" "append_ign" {
   filename = "${local.installer_workspace}/append.ign"
 }
 
-data "local_file" "worker_ign" {
-  depends_on = [null_resource.generate_ignition]
-  filename = "${local.installer_workspace}/worker.ign"
+data "local_file" "worker_igns" {
+  depends_on = [null_resource.create_worker_igns]
+  count = length(var.worker_ips)
+  filename = "${local.installer_workspace}/worker${count.index}.ign"
 }
 
 data "local_file" "bootstrap_ign" {

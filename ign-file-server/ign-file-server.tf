@@ -47,6 +47,7 @@ resource "null_resource" "copy_bootstrap-ign" {
 
 resource "null_resource" "copy_worker-igns" {
   depends_on = [null_resource.configure_apache_server]
+  count = length(var.worker_ign)
 
   connection {
     type                = "ssh"
@@ -56,13 +57,14 @@ resource "null_resource" "copy_worker-igns" {
   }
 
   provisioner "file" {
-    content = var.worker_ign
-    destination = "/opt/igns/worker.ign"
+    content = var.worker_ign[count.index].content
+    destination = "/opt/igns/worker${count.index}.ign"
   }
 }
 
 resource "null_resource" "copy_master-igns" {
   depends_on = [null_resource.configure_apache_server]
+  count = length(var.master_ign)
 
   connection {
     type                = "ssh"
@@ -72,8 +74,8 @@ resource "null_resource" "copy_master-igns" {
   }
 
   provisioner "file" {
-    content = var.master_ign
-    destination = "/opt/igns/master.ign"
+    content = var.master_ign[count.index].content
+    destination = "/opt/igns/worker${count.index}.ign"
   }
 }
 
