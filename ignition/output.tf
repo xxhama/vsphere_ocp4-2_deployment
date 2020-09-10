@@ -21,3 +21,7 @@ output "kubeadmin_password" {
 output "kubeconfig" {
   value = data.local_file.kubeconfig.content_base64
 }
+
+output "installer_path" {
+  value = local.installer_workspace
+}

@@ -114,6 +114,15 @@ resource "vsphere_virtual_machine" "workers" {
   }
 }
 
+resource "null_resource" "module_complete" {
+  depends_on = [
+    vsphere_virtual_machine.workers
+  ]
+  provisioner "local-exec" {
+    command = "echo 'Module Complete'"
+  }
+}
+
 //resource "vsphere_virtual_machine" "storage" {
 //  for_each = var.storage.machines
 //  depends_on = [vsphere_virtual_machine.masters]

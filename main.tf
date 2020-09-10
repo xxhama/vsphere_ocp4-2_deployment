@@ -195,3 +195,10 @@ module "ocp-deployment" {
   iso_folder            = var.vsphere_image_datastore_path
   iso_datastore         = var.vsphere_image_datastore
 }
+
+// Check for cluster deployment success
+module "cluster_deployment_complete" {
+  source = "./cluster_deployment_complete"
+  dependsOn = [module.ocp-deployment.finished]
+  installer_path = module.ignition.installer_path
+}
