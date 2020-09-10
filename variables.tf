@@ -108,10 +108,10 @@ variable "vsphere_cluster"{
 variable "binaries" {
   type = map(string)
   default = {
-    openshift_iso       = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer.iso"
-    openshift_bios      = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-metal-bios.raw.gz"
-    openshift_kernel    = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer-kernel"
-    openshift_initramfs = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.2/4.2.0/rhcos-4.2.0-x86_64-installer-initramfs.img"
+    openshift_iso       = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.4/4.4.17/rhcos-4.4.17-x86_64-installer.x86_64.iso"
+    openshift_bios      = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.4/4.4.17/rhcos-4.4.17-x86_64-metal.x86_64.raw.gz"
+    openshift_kernel    = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.4/4.4.17/rhcos-4.4.17-x86_64-installer-kernel-x86_64"
+    openshift_initramfs = "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.4/4.4.17/rhcos-4.4.17-x86_64-installer-initramfs.x86_64.img"
     govc                = "https://github.com/vmware/govmomi/releases/download/v0.22.1/govc_linux_amd64.gz"
   }
 }
