@@ -92,7 +92,7 @@ resource "null_resource" "inject_network_config_workers" {
   count = length(var.worker_ips)
   provisioner "local-exec" {
     command = <<EOF
-jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8,worker${count.index})}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.ign_modified
+jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:,worker${count.index}"},"filesystem": "root"}]}' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.ign_modified
 EOF
   }
 }
@@ -102,7 +102,7 @@ resource "null_resource" "inject_network_config_masters" {
   count = length(var.master_ips)
   provisioner "local-exec" {
     command = <<EOF
-jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8,master${count.index})}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign_modified
+jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:,master${count.index}"},"filesystem": "root"}]}' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign_modified
 EOF
   }
 }
