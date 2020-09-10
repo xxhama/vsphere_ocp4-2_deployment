@@ -372,38 +372,21 @@
         "immutable": false
       },
       {
-        "name": "oauth_url",
-        "label": "OCP OAuth URL",
-        "description": "",
-        "type": "string",
-        "secured": false,
-        "hidden": false,
-        "immutable": false
-      },  
-      {
-        "name": "api_url",
-        "label": "OCP Server API URL",
-        "description": "",
-        "type": "string",
-        "secured": false,
-        "hidden": false,
-        "immutable": false
-      },
-      {
         "name": "kubeadmin_password",
         "label": "Console Password for kubeadmin",
-        "description": "",
+        "description": "Default Admin Password for OCP",
         "type": "string",
         "secured": true,
         "hidden": false,
         "immutable": false
       },
       {
-        "name": "cluster_prvt_key",
-        "label": "OCP Cluster VM Private Key (base64 encoded)",
+        "name": "kubeconfig",
+        "label": "Kubeconfig(base64 encoded)",
         "description": "",
         "type": "string",
-        "secured": true,
+        "shortname": "Kubeconfig(base64)",
+        "secured": false,
         "hidden": false,
         "immutable": false
       }

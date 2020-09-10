@@ -165,3 +165,8 @@ data "local_file" "bootstrap_ign" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/bootstrap.ign"
 }
+
+data "local_file" "kubeconfig" {
+  depends_on = [null_resource.generate_ignition]
+  filename = "${local.installer_workspace}/auth/kubeconfig"
+}

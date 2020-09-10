@@ -17,3 +17,7 @@ output "bootstrap_ignition" {
 output "kubeadmin_password" {
   value = data.local_file.kubeadmin_password.content
 }
+
+output "kubeconfig" {
+  value = data.local_file.kubeconfig.content_base64
+}
