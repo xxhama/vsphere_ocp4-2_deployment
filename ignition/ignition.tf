@@ -86,59 +86,26 @@ EOF
   }
 }
 
-resource "null_resource" "create_master_igns" {
-  depends_on = [null_resource.generate_ignition]
-  count = length(var.master_ips)
 
-  provisioner "local-exec" {
-    command = <<EOF
-cp ${local.installer_workspace}/master.ign ${local.installer_workspace}/master${count.index}.ign
-EOF
-  }
-}
-
-resource "null_resource" "create_worker_igns" {
+resource "null_resource" "inject_network_config_workers" {
   depends_on = [null_resource.generate_ignition]
   count = length(var.worker_ips)
-
   provisioner "local-exec" {
     command = <<EOF
-cp ${local.installer_workspace}/worker.ign ${local.installer_workspace}/worker${count.index}.ign
+jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8,worker${count.index})}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.ign_modified
 EOF
   }
 }
 
-//resource "null_resource" "inject_network_config_workers" {
-//  depends_on = [null_resource.generate_ignition]
-//  count = length(var.worker_ips)
-//  provisioner "local-exec" {
-//    command = <<EOF
-//jq -c '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\nName=en*\n\n[Network]\nAddress=${var.worker_ips[count.index]}\nGateway=${var.gateway}\nDNS=${var.dns[0]}\n"}]' ${local.installer_workspace}/worker.ign > ${local.installer_workspace}/worker${count.index}.tmp
-//jq -c '.storage += {"files": [{"path": "/etc/sysconfig/network-scripts/ifcfg-ens192","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8;base64,${base64encode(data.template_file.ifcfg-worker[count.index].rendered)}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/worker${count.index}.tmp > ${local.installer_workspace}/worker${count.index}.ign_modified
-//EOF
-//  }
-//}
-//
-//resource "null_resource" "inject_network_config_masters" {
-//  depends_on = [null_resource.generate_ignition]
-//  count = length(var.master_ips)
-//  provisioner "local-exec" {
-//    command = <<EOF
-//jq -c '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\nName=en*\n\n[Network]\nAddress=${var.master_ips[count.index]}\nGateway=${var.gateway}\nDNS=${var.dns[0]}\n"}]' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.tmp
-//jq -c '.storage += {"files": [{"path": "/etc/sysconfig/network-scripts/ifcfg-ens192","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8;base64,${base64encode(data.template_file.ifcfg-master[count.index].rendered)}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/master${count.index}.tmp > ${local.installer_workspace}/master${count.index}.ign_modified
-//EOF
-//  }
-//}
-//
-//resource "null_resource" "inject_network_config_append" {
-//  depends_on = [null_resource.generate_ignition]
-//  provisioner "local-exec" {
-//    command = <<EOF
-//jq -c '.networkd.units += [{"name": "00-ens192.network", "contents": "[Match]\nName=en*\n\n[Network]\nAddress=${var.bootstrap_ip}\nGateway=${var.gateway}\nDNS=${var.dns[0]}\n"}]' ${local.installer_workspace}/append.ign > ${local.installer_workspace}/append.tmp
-//jq -c '.storage += {"files": [{"path": "/etc/sysconfig/network-scripts/ifcfg-ens192","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8;base64,${base64encode(data.template_file.ifcfg-bootstrap.rendered)}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/append.tmp > ${local.installer_workspace}/append.ign_modified
-//EOF
-//  }
-//}
+resource "null_resource" "inject_network_config_masters" {
+  depends_on = [null_resource.generate_ignition]
+  count = length(var.master_ips)
+  provisioner "local-exec" {
+    command = <<EOF
+jq -c '.storage += {"files": [{"path": "/etc/hostname","mode": 420,"contents": {"source": "data:text/plain;charset=utf-8,master${count.index})}","verification": {}},"filesystem": "root"}]}' ${local.installer_workspace}/master.ign > ${local.installer_workspace}/master${count.index}.ign_modified
+EOF
+  }
+}
 
 data "local_file" "kubeadmin_password" {
   depends_on = [null_resource.generate_ignition]
@@ -146,9 +113,9 @@ data "local_file" "kubeadmin_password" {
 }
 
 data "local_file" "master_igns" {
-  depends_on = [null_resource.create_master_igns]
+  depends_on = [null_resource.inject_network_config_masters]
   count = length(var.master_ips)
-  filename = "${local.installer_workspace}/master${count.index}.ign"
+  filename = "${local.installer_workspace}/master${count.index}.ign_modified"
 }
 
 data "local_file" "append_ign" {
@@ -157,9 +124,9 @@ data "local_file" "append_ign" {
 }
 
 data "local_file" "worker_igns" {
-  depends_on = [null_resource.create_worker_igns]
+  depends_on = [null_resource.inject_network_config_workers]
   count = length(var.worker_ips)
-  filename = "${local.installer_workspace}/worker${count.index}.ign"
+  filename = "${local.installer_workspace}/worker${count.index}.ign_modified"
 }
 
 data "local_file" "bootstrap_ign" {

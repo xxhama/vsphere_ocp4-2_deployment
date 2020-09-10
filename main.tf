@@ -197,8 +197,8 @@ module "ocp-deployment" {
 }
 
 // Check for cluster deployment success
-module "cluster_deployment_complete" {
-  source = "./cluster_deployment_complete"
-  dependsOn = [module.ocp-deployment.finished]
-  installer_path = module.ignition.installer_path
-}
+//module "cluster_deployment_complete" {
+//  source = "./cluster_deployment_complete"
+//  dependsOn = [module.ocp-deployment.finished]
+//  installer_path = module.ignition.installer_path
+//}
