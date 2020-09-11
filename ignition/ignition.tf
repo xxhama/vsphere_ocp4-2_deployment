@@ -63,7 +63,6 @@ resource "null_resource" "generate_manifests" {
     null_resource.download_binaries,
     local_file.install_config_yaml,
   ]
-
   provisioner "local-exec" {
     command = <<EOF
 cp ${local.installer_workspace}/install-config.yaml install-config.yaml.backup
