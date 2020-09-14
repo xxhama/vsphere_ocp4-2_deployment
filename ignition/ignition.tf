@@ -71,9 +71,19 @@ EOF
   }
 }
 
+resource "null_resource" "disable_master_scheduling" {
+  depends_on = [null_resource.generate_manifests]
+
+  provisioner "local-exec" {
+    command = <<EOF
+sed 's/mastersSchedulable: true/    mastersSchedulable: false/g' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
+EOF
+  }
+}
+
 resource "null_resource" "generate_ignition" {
   depends_on = [
-    null_resource.generate_manifests
+    null_resource.disable_master_scheduling
   ]
 
   provisioner "local-exec" {
