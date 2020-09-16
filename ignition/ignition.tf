@@ -76,7 +76,7 @@ resource "null_resource" "disable_master_scheduling" {
 
   provisioner "local-exec" {
     command = <<EOF
-sed -i 's/mastersSchedulable: true/mastersSchedulable: false/g' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
+sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
 EOF
   }
 }
@@ -89,7 +89,6 @@ resource "null_resource" "generate_ignition" {
   provisioner "local-exec" {
     command = <<EOF
 ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create ignition-configs
-cat ${local.installer_workspace}/auth/kubeconfig | base64 -w0
 EOF
   }
 }

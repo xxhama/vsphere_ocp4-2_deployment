@@ -24,6 +24,7 @@ sshKey: ${var.public_ssh_key}
 proxy:
     httpProxy: http://${var.proxy_host}
     httpsProxy: http://${var.proxy_host}
+    noProxy: ${join(",", var.no_proxies)}
 EOF
 }
 

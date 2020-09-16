@@ -358,6 +358,17 @@
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "no_proxies",
+        "label": "No Proxies List",
+        "type": "list",
+        "description": "A list of domains or cidr blocks to not go through the proxy",
+        "required": true,
+        "secured": false,
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
       }
     ],
     "template_output_params": [

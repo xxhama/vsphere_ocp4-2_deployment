@@ -102,6 +102,7 @@ module "ignition" {
   dns                           = var.vm_dns_servers
   bootstrap_ip                  = var.bootstrap_ip
   network_prefix                = var.infranode_vm_ipv4_prefix_length
+  no_proxies                    = var.no_proxies
 }
 // Module config file server for ign
 //

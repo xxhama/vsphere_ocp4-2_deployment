@@ -74,3 +74,7 @@ variable "proxy_host" {
 variable "network_prefix" {
   type = string
 }
+
+variable "no_proxies" {
+  type = list(string)
+}
