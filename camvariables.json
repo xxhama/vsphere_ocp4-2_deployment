@@ -134,23 +134,35 @@
       {
         "name": "vm_private_adapter_type",
         "default":"${openshift_container_platform_info.vm_private_adapter_type}",
-        "description": "Private Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
+        "description": "Network adapter type for infrastructure and OCP cluster VM vNIC Configuration",
         "type": "string",
         "required": true,
         "secured": false,
-        "label": "Private Network Adapter Type for infrastructure and OCP cluster VM",
+        "label": "Network Adapter Type for infrastructure and OCP cluster VM",
         "hidden": true,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
       },
       {
         "name": "vsphere_network",
-        "label": "Private Network name for infrastructure and OCP cluster VM",
+        "label": "Network name for infrastructure and OCP cluster VM",
         "default":"${openshift_container_platform_info.vsphere_network}",
         "type": "string",
-        "description": "Private vSphere Network name for infrastructure and OCP cluster VM.",
+        "description": "vSphere Network name for infrastructure and OCP cluster VM.",
         "required": true,
         "secured": false,
+        "hidden": false,
+        "immutable": false,
+        "group_name": "openshift_container_platform_info"
+      },
+      {
+        "name": "vm_domain_name",
+        "default":"${openshift_container_platform_info.vm_domain_name}",
+        "description": "Virtual machine domain name.",
+        "type": "string",
+        "required": true,
+        "secured": false,
+        "label": "Virtual Machine Domain Name",
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
@@ -187,30 +199,6 @@
         "required": true,
         "secured": false,
         "label": "ISO Datastore path",
-        "hidden": false,
-        "immutable": false,
-        "group_name": "openshift_container_platform_info"
-      },
-      {
-        "name": "ocp_cluster_domain",
-        "label": "OCP Base Domain Name",
-        "default": "${openshift_container_platform_info.ocp_cluster_domain}",
-        "type": "string",
-        "description": "OCP Base Domain Name. The combination of cluster name and this domain name creates what a cluster domain, that will be used by OCP cluster nodes and the URLs.",
-        "required": true,
-        "secured": false,
-        "hidden": false,
-        "immutable": false,
-        "group_name": "openshift_container_platform_info"
-      },
-      {
-        "name": "ocp_vm_template",
-        "label": "OCP Cluster VMs Template Name (RHCOS 4.2 image template)",
-        "default": "${openshift_container_platform_info.ocp_vm_template}",
-        "type": "string",
-        "description": "Name of the VM template to clone to create VMs for the cluster.",
-        "required": true,
-        "secured": false,
         "hidden": false,
         "immutable": false,
         "group_name": "openshift_container_platform_info"
@@ -261,18 +249,6 @@
         "hidden": false,
         "immutable": false,
         "default": "${openshift_container_platform_info.vm_dns_suffixes}",
-        "group_name": "openshift_container_platform_info"
-      },
-      {
-        "name": "vm_domain_name",
-        "default":"${openshift_container_platform_info.vm_domain_name}",
-        "description": "Virtual machine domain name.",
-        "type": "string",
-        "required": true,
-        "secured": false,
-        "label": "Virtual Machine Domain Name",
-        "hidden": false,
-        "immutable": false,
         "group_name": "openshift_container_platform_info"
       },
       {
