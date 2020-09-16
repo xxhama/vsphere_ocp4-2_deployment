@@ -93,7 +93,6 @@ EOF
   }
 }
 
-
 resource "null_resource" "inject_network_config_workers" {
   depends_on = [null_resource.generate_ignition]
   count = length(var.worker_ips)
