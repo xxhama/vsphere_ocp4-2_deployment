@@ -83,6 +83,7 @@ module "deployVM_infranode" {
 }
 
 module "ignition" {
+  dependsOn = [module.deployVM_infranode.dependsOn]
   source                        = "./ignition"
   cluster_name                  = var.clustername
   base_domain                   = var.vm_domain_name
@@ -103,6 +104,8 @@ module "ignition" {
   bootstrap_ip                  = var.bootstrap_ip
   network_prefix                = var.infranode_vm_ipv4_prefix_length
   no_proxies                    = var.no_proxies
+  username                      = var.infranode_vm_os_user
+  ssh_private_key               = chomp(tls_private_key.installkey.private_key_pem)
 }
 // Module config file server for ign
 //
@@ -198,8 +201,11 @@ module "ocp-deployment" {
 }
 
 // Check for cluster deployment success
-//module "cluster_deployment_complete" {
-//  source = "./cluster_deployment_complete"
-//  dependsOn = [module.ocp-deployment.finished]
-//  installer_path = module.ignition.installer_path
-//}
+module "cluster_deployment_complete" {
+  source = "./cluster_deployment_complete"
+  dependsOn = [module.ocp-deployment.finished]
+  installer_path = module.ignition.installer_path
+  username                      = var.infranode_vm_os_user
+  ssh_private_key               = chomp(tls_private_key.installkey.private_key_pem)
+  infra_host                    = var.infranode_ip
+}

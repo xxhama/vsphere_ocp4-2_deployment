@@ -78,3 +78,10 @@ variable "network_prefix" {
 variable "no_proxies" {
   type = list(string)
 }
+variable "ssh_private_key" {
+  type = string
+}
+variable "username" {
+  type        = string
+  description = "User for the Operating System User to access virtual machine"
+}

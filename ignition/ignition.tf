@@ -114,6 +114,26 @@ EOF
   }
 }
 
+resource "null_resource" "download_binaries" {
+  depends_on = [
+    null_resource.inject_network_config_masters]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
+    source = "${local.installer_workspace}/oc"
+    destination = "/usr/local/bin/oc"
+  }
+  provisioner "file" {
+    source = "${local.installer_workspace}/kubectl"
+    destination = "/usr/local/bin/kubectl"
+  }
+}
+
 data "local_file" "kubeadmin_password" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeadmin-password"
