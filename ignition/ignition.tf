@@ -89,7 +89,6 @@ resource "null_resource" "generate_ignition" {
   provisioner "local-exec" {
     command = <<EOF
 ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace} create ignition-configs
-cat ${local.installer_workspace}/auth/kubeconfig | base64 -w0
 EOF
   }
 }
