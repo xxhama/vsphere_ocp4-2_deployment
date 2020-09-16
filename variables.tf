@@ -125,3 +125,7 @@ variable "vsphere_image_datastore_path" {
   type        = string
   description = "Path in vsphere_image_datastore where ISO images will be uploaded"
 }
+
+variable "no_proxies" {
+  type = list(string)
+}

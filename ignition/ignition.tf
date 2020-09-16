@@ -76,7 +76,7 @@ resource "null_resource" "disable_master_scheduling" {
 
   provisioner "local-exec" {
     command = <<EOF
-sed -i 's/mastersSchedulable: true/mastersSchedulable: false/g' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
+sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
 EOF
   }
 }
