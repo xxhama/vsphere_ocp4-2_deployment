@@ -114,7 +114,7 @@ EOF
   }
 }
 
-resource "null_resource" "download_binaries" {
+resource "null_resource" "move_binaries" {
   depends_on = [
     null_resource.inject_network_config_masters]
   connection {
