@@ -1,11 +1,13 @@
-resource "null_resource" "dependsOn" {
+resource "null_resource" "dependency" {
   triggers = {
     all_dependencies = join(",", var.dependsOn)
   }
 }
 
 resource "null_resource" "approve_csr" {
-
+  depends_on = [
+    null_resource.dependency
+  ]
   connection {
     host = var.infra_host
     user = var.username
