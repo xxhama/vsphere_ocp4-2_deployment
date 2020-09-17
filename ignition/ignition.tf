@@ -27,6 +27,10 @@ locals {
 //}
 
 resource "null_resource" "download_binaries" {
+
+  depends_on = [
+    null_resource.dependency
+  ]
   provisioner "local-exec" {
     when    = create
     command = <<EOF
