@@ -208,4 +208,5 @@ module "cluster_deployment_complete" {
   username                      = var.infranode_vm_os_user
   ssh_private_key               = chomp(tls_private_key.installkey.private_key_pem)
   infra_host                    = var.infranode_ip
+  bootstrap_ip                  = var.bootstrap_ip
 }

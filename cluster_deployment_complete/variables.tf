@@ -15,3 +15,8 @@ variable "username" {
   type        = string
   description = "User for the Operating System User to access virtual machine"
 }
+
+variable "bootstrap_ip"{
+  type = string
+  description = "Bootstrap IP "
+}

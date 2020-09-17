@@ -131,12 +131,16 @@ resource "null_resource" "move_binaries" {
   }
 
   provisioner "file" {
-    source = "${local.installer_workspace}/oc"
+    source = data.local_file.oc
     destination = "/usr/local/bin/oc"
   }
   provisioner "file" {
-    source = "${local.installer_workspace}/kubectl"
+    source = data.local_file.kubectl
     destination = "/usr/local/bin/kubectl"
+  }
+  provisioner "file" {
+    source = data.local_file.kubeconfig
+    destination = "/opt/kubeconfig"
   }
 }
 
@@ -170,4 +174,13 @@ data "local_file" "bootstrap_ign" {
 data "local_file" "kubeconfig" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeconfig"
+}
+data "local_file" "oc" {
+  depends_on = [null_resource.download_binaries]
+  filename = "${local.installer_workspace}/oc"
+}
+
+data "local_file" "kubectl" {
+  depends_on = [null_resource.download_binaries]
+  filename = "${local.installer_workspace}/kubectl"
 }

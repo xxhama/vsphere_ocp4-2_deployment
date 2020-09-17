@@ -4,17 +4,7 @@ resource "null_resource" "dependsOn" {
   }
 }
 
-resource "null_resource" "check_deployment" {
-  depends_on = [null_resource.dependsOn]
-  provisioner "local-exec" {
-    command = "${var.installer_path}/openshift-install --dir=${var.installer_path} wait-for install-complete"
-  }
-}
-
 resource "null_resource" "approve_csr" {
-  depends_on = [
-    null_resource.check_deployment
-  ]
 
   connection {
     host = var.infra_host
@@ -24,7 +14,11 @@ resource "null_resource" "approve_csr" {
 
   provisioner "remote-exec" {
     inline = [
+      "ssh core@${var.bootstrap_ip}",
+      "until journalctl -b  -u bootkube.service |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
+      "exit",
       "for i in {1 3 5 10}; do oc get csr -o name | xargs oc adm certificate approve; sleep 1m; done",
     ]
   }
 }
+
