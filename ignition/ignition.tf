@@ -126,7 +126,7 @@ EOF
 
 resource "null_resource" "move_binaries" {
   depends_on = [
-    null_resource.inject_network_config_masters]
+    null_resource.download_binaries]
   connection {
     type = "ssh"
     user = var.username
@@ -135,15 +135,15 @@ resource "null_resource" "move_binaries" {
   }
 
   provisioner "file" {
-    source = data.local_file.oc
+    source = data.local_file.oc.content
     destination = "/usr/local/bin/oc"
   }
   provisioner "file" {
-    source = data.local_file.kubectl
+    source = data.local_file.kubectl.content
     destination = "/usr/local/bin/kubectl"
   }
   provisioner "file" {
-    source = data.local_file.kubeconfig
+    source = data.local_file.kubeconfig.content
     destination = "/opt/kubeconfig"
   }
 }
