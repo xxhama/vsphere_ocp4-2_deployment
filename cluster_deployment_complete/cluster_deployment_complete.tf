@@ -17,6 +17,7 @@ resource "null_resource" "approve_csr" {
       "ssh core@${var.bootstrap_ip}",
       "until journalctl -b  -u bootkube.service |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
       "exit",
+      "export KUBECONFIG=/opt/kubeconfig",
       "for i in {1 3 5 10}; do oc get csr -o name | xargs oc adm certificate approve; sleep 1m; done",
     ]
   }
