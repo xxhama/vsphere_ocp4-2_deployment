@@ -1,3 +1,9 @@
+resource "null_resource" "dependency" {
+  triggers = {
+    all_dependencies = join(",", var.dependsOn)
+  }
+}
+
 locals {
   installer_workspace     = "${path.module}/installer-files"
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"

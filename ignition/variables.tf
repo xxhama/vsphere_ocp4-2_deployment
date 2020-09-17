@@ -85,3 +85,8 @@ variable "username" {
   type        = string
   description = "User for the Operating System User to access virtual machine"
 }
+
+variable "dependsOn" {
+  type    = list(string)
+  default = []
+}
