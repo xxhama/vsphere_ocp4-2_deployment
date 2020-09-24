@@ -63,6 +63,30 @@ EOF
   }
 
 }
+resource "null_resource" "move_binaries" {
+  
+  depends_on = [
+    null_resource.download_binaries]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
+    source = data.local_file.oc.content
+    destination = "/usr/local/bin/oc"
+  }
+  provisioner "file" {
+    source = data.local_file.kubectl.content
+    destination = "/usr/local/bin/kubectl"
+  }
+  provisioner "file" {
+    source = data.local_file.kubeconfig.content
+    destination = "/opt/kubeconfig"
+  }
+}
 
 resource "null_resource" "generate_manifests" {
   triggers = {
@@ -70,7 +94,7 @@ resource "null_resource" "generate_manifests" {
   }
 
   depends_on = [
-    null_resource.download_binaries,
+    null_resource.move_binaries,
     local_file.install_config_yaml,
   ]
   provisioner "local-exec" {
@@ -124,29 +148,7 @@ EOF
   }
 }
 
-resource "null_resource" "move_binaries" {
-  depends_on = [
-    null_resource.download_binaries]
-  connection {
-    type = "ssh"
-    user = var.username
-    private_key = var.ssh_private_key
-    host = var.infra_ip
-  }
 
-  provisioner "file" {
-    source = data.local_file.oc.content
-    destination = "/usr/local/bin/oc"
-  }
-  provisioner "file" {
-    source = data.local_file.kubectl.content
-    destination = "/usr/local/bin/kubectl"
-  }
-  provisioner "file" {
-    source = data.local_file.kubeconfig.content
-    destination = "/opt/kubeconfig"
-  }
-}
 
 data "local_file" "kubeadmin_password" {
   depends_on = [null_resource.generate_ignition]
