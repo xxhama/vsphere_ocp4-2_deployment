@@ -138,7 +138,7 @@ resource "null_resource" "move_oc" {
   }
 
   provisioner "file" {
-    source = "${local.installer_workspace}/auth/oc"
+    source = "${local.installer_workspace}/oc"
     destination = "/usr/local/bin/oc"
   }
 }
