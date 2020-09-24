@@ -192,30 +192,6 @@
         "group_name": "openshift_container_platform_info"
       },
       {
-        "name": "ocp_cluster_domain",
-        "label": "OCP Base Domain Name",
-        "default": "${openshift_container_platform_info.ocp_cluster_domain}",
-        "type": "string",
-        "description": "OCP Base Domain Name. The combination of cluster name and this domain name creates what a cluster domain, that will be used by OCP cluster nodes and the URLs.",
-        "required": true,
-        "secured": false,
-        "hidden": false,
-        "immutable": false,
-        "group_name": "openshift_container_platform_info"
-      },
-      {
-        "name": "ocp_vm_template",
-        "label": "OCP Cluster VMs Template Name (RHCOS 4.2 image template)",
-        "default": "${openshift_container_platform_info.ocp_vm_template}",
-        "type": "string",
-        "description": "Name of the VM template to clone to create VMs for the cluster.",
-        "required": true,
-        "secured": false,
-        "hidden": false,
-        "immutable": false,
-        "group_name": "openshift_container_platform_info"
-      },
-      {
         "name": "pullsecret",
         "label": "Base64 encoded OCP image pull secret",
         "default": "${openshift_container_platform_info.pullsecret}",
