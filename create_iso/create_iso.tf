@@ -4,7 +4,6 @@ resource "null_resource" "dependency" {
   }
 }
 
-
 locals {
   all_hostnames = concat(list(var.bootstrap), var.masters, var.workers)
   all_ips       = concat(list(var.bootstrap_ip), var.master_ips, var.worker_ips)
@@ -92,7 +91,8 @@ resource "null_resource" "downloadiso" {
     ]
   }
 }
-  locals {
+
+locals {
     coreos_netmask = var.netmask
     nameservers    = join(" ", formatlist("nameserver=%v", var.openshift_nameservers))
   }
