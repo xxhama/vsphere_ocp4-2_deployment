@@ -189,6 +189,7 @@ module "ocp-deployment" {
   master_ips            = var.master_ips
   worker_ips            = var.worker_ips
   folder                = var.vm_folder
+  rhcos_template_path   = var.ocp_vm_template
   vsphere_datacenter    = var.vsphere_datacenter
   vsphere_datastore     = var.vsphere_datastore
   vsphere_network       = var.vsphere_network
