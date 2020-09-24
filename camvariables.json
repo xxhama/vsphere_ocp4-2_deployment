@@ -364,7 +364,7 @@
         "label": "No Proxies List",
         "type": "list",
         "description": "A list of domains or cidr blocks to not go through the proxy",
-        "required": true,
+        "required": false,
         "secured": false,
         "hidden": false,
         "immutable": false,
