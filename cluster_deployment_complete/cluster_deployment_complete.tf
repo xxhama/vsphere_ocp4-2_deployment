@@ -16,6 +16,7 @@ resource "null_resource" "approve_csr" {
 
   provisioner "remote-exec" {
     inline = [
+      "ssh -o \"StrictHostKeyChecking no\" ${var.bootstrap_ip}",
       "ssh core@${var.bootstrap_ip}",
       "chmod 777 /usr/local/bin/kubectl",
       "chmod 777 /usr/local/bin/oc",
