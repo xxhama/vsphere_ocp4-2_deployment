@@ -18,10 +18,10 @@ resource "null_resource" "approve_csr" {
     inline = [
       "ssh -o \"StrictHostKeyChecking no\" ${var.bootstrap_ip}",
       "ssh core@${var.bootstrap_ip}",
-      "chmod 777 /usr/local/bin/kubectl",
-      "chmod 777 /usr/local/bin/oc",
       "until journalctl -b  -u bootkube.service |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
       "exit",
+      "chmod 777 /usr/local/bin/kubectl",
+      "chmod 777 /usr/local/bin/oc",
       "export KUBECONFIG=/opt/kubeconfig",
       "for i in {1 3 5 10}; do oc get csr -o name | xargs oc adm certificate approve; sleep 1m; done",
     ]
