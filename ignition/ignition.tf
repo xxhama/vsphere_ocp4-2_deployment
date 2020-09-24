@@ -109,7 +109,7 @@ EOF
   }
 }
 
-resource "null_resource" "move_binaries" {
+resource "null_resource" "move_kubectl" {
 
   depends_on = [
     null_resource.inject_network_config_masters,
@@ -122,12 +122,36 @@ resource "null_resource" "move_binaries" {
   }
 
   provisioner "file" {
+    source = data.local_file.kubectl.content
+    destination = "/usr/local/bin/kubectl"
+  }
+}
+resource "null_resource" "move_oc" {
+
+  depends_on = [
+    null_resource.move_kubectl]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
     source = data.local_file.oc.content
     destination = "/usr/local/bin/oc"
   }
-  provisioner "file" {
-    source = data.local_file.kubectl.content
-    destination = "/usr/local/bin/kubectl"
+}
+
+resource "null_resource" "move_kubeconfig" {
+
+  depends_on = [
+    null_resource.move_kubectl]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
   }
   provisioner "file" {
     source = data.local_file.kubeconfig.content
@@ -180,7 +204,7 @@ data "local_file" "kubectl" {
 
 resource "null_resource" "ignition_files_created" {
   depends_on = [
-    null_resource.move_binaries
+    null_resource.move_kubeconfig
   ]
   provisioner "local-exec" {
     command = "echo 'ignition files created'"
