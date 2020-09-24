@@ -27,6 +27,6 @@ output "installer_path" {
 }
 
 output "dependsOn" {
-  value       = null_resource.move_binaries.id
+  value       = null_resource.ignition_files_created.id
   description = "Output Parameter set when the module execution is completed"
 }

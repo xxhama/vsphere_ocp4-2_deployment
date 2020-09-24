@@ -19,6 +19,7 @@ resource "null_resource" "download_binaries" {
     when    = create
     command = <<EOF
 test -e ${local.installer_workspace} || mkdir ${local.installer_workspace}
+rm -rf ${local.installer_workspace}/.
 case $(uname -s) in
   Darwin)
     wget -r -l1 -np -nd -q ${local.openshift_installer_url} -P ${local.installer_workspace} -A 'openshift-install-mac-4*.tar.gz'
@@ -179,7 +180,7 @@ data "local_file" "kubectl" {
 
 resource "null_resource" "ignition_files_created" {
   depends_on = [
-    null_resource.inject_network_config_masters
+    null_resource.move_binaries
   ]
   provisioner "local-exec" {
     command = "echo 'ignition files created'"
