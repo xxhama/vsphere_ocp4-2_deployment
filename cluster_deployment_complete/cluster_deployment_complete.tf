@@ -17,6 +17,8 @@ resource "null_resource" "approve_csr" {
   provisioner "remote-exec" {
     inline = [
       "ssh core@${var.bootstrap_ip}",
+      "chmod 777 /usr/local/bin/kubectl",
+      "chmod 777 /usr/local/bin/oc",
       "until journalctl -b  -u bootkube.service |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
       "exit",
       "export KUBECONFIG=/opt/kubeconfig",
