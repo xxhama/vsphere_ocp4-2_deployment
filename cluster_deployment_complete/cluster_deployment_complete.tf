@@ -24,7 +24,14 @@ resource "null_resource" "approve_csr" {
       "chmod 777 /usr/local/bin/oc",
       "export KUBECONFIG=/opt/kubeconfig",
       "for i in {1 3 5 10}; do oc get csr -o name | xargs oc adm certificate approve; sleep 1m; done",
+
     ]
   }
 }
 
+resource "null_resource" "check_deployment" {
+  depends_on = [null_resource.approve_csr]
+  provisioner "local-exec" {
+    command = "${var.installer_path}/openshift-install --dir=${var.installer_path} wait-for install-complete"
+  }
+}
