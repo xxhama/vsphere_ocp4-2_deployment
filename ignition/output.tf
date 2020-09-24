@@ -27,6 +27,6 @@ output "installer_path" {
 }
 
 output "dependsOn" {
-  value       = null_resource.ignition_files_created.id
+  value       = null_resource.inject_network_config_masters.id
   description = "Output Parameter set when the module execution is completed"
 }

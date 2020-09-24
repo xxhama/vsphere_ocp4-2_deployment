@@ -124,7 +124,7 @@ EOF
 }
 
 resource "null_resource" "inject_network_config_masters" {
-  depends_on = [null_resource.generate_ignition]
+  depends_on = [null_resource.inject_network_config_workers]
   count = length(var.master_ips)
   provisioner "local-exec" {
     command = <<EOF
