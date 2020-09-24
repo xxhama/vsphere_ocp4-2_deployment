@@ -9,22 +9,6 @@ locals {
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
 }
 
-//# Proxy TLS Cert
-//resource "null_resource" "download_proxy_cert" {
-//  provisioner "local-exec" {
-//    when = create
-//    command = "echo | openssl s_client -showcerts -connect ${var.proxy_host}:${var.proxy_port} 2>/dev/null | openssl x509 -outform PEM > ca.crt"
-//  }
-//
-//  provisioner "local-exec" {
-//    when = destroy
-//    command = "rm -rf ${local.installer_workspace}/ca.crt"
-//  }
-//}
-//data "local_file" "proxy_cert" {
-//  depends_on = [null_resource.download_proxy_cert]
-//  filename = "${local.installer_workspace}/ca.crt"
-//}
 
 resource "null_resource" "download_binaries" {
 
@@ -63,30 +47,7 @@ EOF
   }
 
 }
-resource "null_resource" "move_binaries" {
-  
-  depends_on = [
-    null_resource.download_binaries]
-  connection {
-    type = "ssh"
-    user = var.username
-    private_key = var.ssh_private_key
-    host = var.infra_ip
-  }
 
-  provisioner "file" {
-    source = data.local_file.oc.content
-    destination = "/usr/local/bin/oc"
-  }
-  provisioner "file" {
-    source = data.local_file.kubectl.content
-    destination = "/usr/local/bin/kubectl"
-  }
-  provisioner "file" {
-    source = data.local_file.kubeconfig.content
-    destination = "/opt/kubeconfig"
-  }
-}
 
 resource "null_resource" "generate_manifests" {
   triggers = {
@@ -94,7 +55,7 @@ resource "null_resource" "generate_manifests" {
   }
 
   depends_on = [
-    null_resource.move_binaries,
+    null_resource.download_binaries,
     local_file.install_config_yaml,
   ]
   provisioner "local-exec" {
@@ -126,10 +87,34 @@ ${local.installer_workspace}/openshift-install --dir=${local.installer_workspace
 EOF
   }
 }
+resource "null_resource" "move_binaries" {
+
+  depends_on = [
+    null_resource.generate_ignition]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
+    source = data.local_file.oc.content
+    destination = "/usr/local/bin/oc"
+  }
+  provisioner "file" {
+    source = data.local_file.kubectl.content
+    destination = "/usr/local/bin/kubectl"
+  }
+  provisioner "file" {
+    source = data.local_file.kubeconfig.content
+    destination = "/opt/kubeconfig"
+  }
+}
 
 
 resource "null_resource" "inject_network_config_workers" {
-  depends_on = [null_resource.generate_ignition]
+  depends_on = [null_resource.move_binaries]
   count = length(var.worker_ips)
   provisioner "local-exec" {
     command = <<EOF
