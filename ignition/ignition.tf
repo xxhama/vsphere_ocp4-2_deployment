@@ -122,7 +122,7 @@ resource "null_resource" "move_kubectl" {
   }
 
   provisioner "file" {
-    source = data.local_file.kubectl.content
+    source = "${local.installer_workspace}/kubectl"
     destination = "/usr/local/bin/kubectl"
   }
 }
@@ -138,7 +138,7 @@ resource "null_resource" "move_oc" {
   }
 
   provisioner "file" {
-    source = data.local_file.oc.content
+    source = "${local.installer_workspace}/auth/oc"
     destination = "/usr/local/bin/oc"
   }
 }
@@ -154,7 +154,7 @@ resource "null_resource" "move_kubeconfig" {
     host = var.infra_ip
   }
   provisioner "file" {
-    source = data.local_file.kubeconfig.content
+    source = "${local.installer_workspace}/auth/kubeconfig"
     destination = "/opt/kubeconfig"
   }
 }
@@ -186,20 +186,6 @@ data "local_file" "worker_igns" {
 data "local_file" "bootstrap_ign" {
   depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/bootstrap.ign"
-}
-
-data "local_file" "kubeconfig" {
-  depends_on = [null_resource.generate_ignition]
-  filename = "${local.installer_workspace}/auth/kubeconfig"
-}
-data "local_file" "oc" {
-  depends_on = [null_resource.download_binaries]
-  filename = "${local.installer_workspace}/oc"
-}
-
-data "local_file" "kubectl" {
-  depends_on = [null_resource.download_binaries]
-  filename = "${local.installer_workspace}/kubectl"
 }
 
 resource "null_resource" "ignition_files_created" {
