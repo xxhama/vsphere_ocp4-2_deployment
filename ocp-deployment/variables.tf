@@ -9,6 +9,7 @@ variable "folder" {}
 variable "bootstrap_ip" {}
 variable "master_ips" {}
 variable "worker_ips" {}
+variable "rhcos_template_path" {}
 
 // Ignition Files
 variable "master_ign" {}
@@ -47,8 +48,8 @@ data "vsphere_network" "network" {
 }
 
 data "vsphere_virtual_machine" "master-worker-template" {
+  name          = var.rhcos_template_path
   datacenter_id = data.vsphere_datacenter.dc.id
-  name = "rhcos-template"
 }
 
 variable "dependsOn" {

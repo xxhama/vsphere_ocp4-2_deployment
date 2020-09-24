@@ -45,6 +45,10 @@ variable "vm_domain_name" {
   type = string
 }
 
+variable "ocp_vm_template" {
+  type = string
+}
+
 variable "infranode_vm_os_user" {
   type = string
 }
