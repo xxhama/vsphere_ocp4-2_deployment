@@ -20,7 +20,7 @@ resource "null_resource" "configure_apache_server" {
   provisioner "remote-exec" {
     inline = [
       "systemctl stop firewalld",
-      "yum update -y",
+      //"yum update -y",
       "yum install httpd -y",
       "sed -i -e \"s/Listen 80/Listen 8080/\" /etc/httpd/conf/httpd.conf",
       "systemctl start httpd",
