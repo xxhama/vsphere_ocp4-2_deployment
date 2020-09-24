@@ -17,9 +17,7 @@ resource "null_resource" "approve_csr" {
   provisioner "remote-exec" {
     inline = [
       "ssh -o \"StrictHostKeyChecking no\" ${var.bootstrap_ip}",
-      "ssh core@${var.bootstrap_ip}",
-      "until journalctl -b  -u bootkube.service |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
-      "exit",
+      "until ssh core@${var.bootstrap_ip} 'journalctl -b  -u bootkube.service' |grep -o 'bootkube.service complete';do echo 'waiting for bootstrap to complete'; sleep 1m ;done",
       "chmod +x /usr/local/bin/kubectl",
       "chmod +x /usr/local/bin/oc",
       "export KUBECONFIG=/opt/kubeconfig",
