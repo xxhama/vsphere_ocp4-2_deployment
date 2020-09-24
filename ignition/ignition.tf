@@ -188,3 +188,12 @@ data "local_file" "kubectl" {
   depends_on = [null_resource.download_binaries]
   filename = "${local.installer_workspace}/kubectl"
 }
+
+resource "null_resource" "ignition_files_created" {
+  depends_on = [
+    null_resource.inject_network_config_masters
+  ]
+  provisioner "local-exec" {
+    command = "echo 'ignition files created'"
+  }
+}

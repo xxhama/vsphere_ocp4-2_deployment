@@ -111,7 +111,7 @@ module "ignition" {
 //
 
 module "iso-creation"{
-  dependsOn = [module.deployVM_infranode.dependsOn]
+  dependsOn = [module.ignition.dependsOn]
 
   source                        = "./create_iso"
   binaries                      = var.binaries

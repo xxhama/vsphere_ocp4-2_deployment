@@ -25,3 +25,8 @@ output "kubeconfig" {
 output "installer_path" {
   value = local.installer_workspace
 }
+
+output "dependsOn" {
+  value       = null_resource.ignition_files_created.id
+  description = "Output Parameter set when the module execution is completed"
+}
