@@ -200,4 +200,7 @@ resource "null_resource" "ignition_files_created" {
   provisioner "local-exec" {
     command = "echo 'ignition files created'"
   }
+  
+  
+  
 }
