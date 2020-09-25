@@ -1,30 +1,25 @@
+resource "null_resource" "dependency" {
+  triggers = {
+    all_dependencies = join(",", var.dependsOn)
+  }
+}
+
 locals {
   installer_workspace     = "${path.module}/installer-files"
   openshift_installer_url = "${var.openshift_installer_url}/${var.openshift_version}"
 }
 
-//# Proxy TLS Cert
-//resource "null_resource" "download_proxy_cert" {
-//  provisioner "local-exec" {
-//    when = create
-//    command = "echo | openssl s_client -showcerts -connect ${var.proxy_host}:${var.proxy_port} 2>/dev/null | openssl x509 -outform PEM > ca.crt"
-//  }
-//
-//  provisioner "local-exec" {
-//    when = destroy
-//    command = "rm -rf ${local.installer_workspace}/ca.crt"
-//  }
-//}
-//data "local_file" "proxy_cert" {
-//  depends_on = [null_resource.download_proxy_cert]
-//  filename = "${local.installer_workspace}/ca.crt"
-//}
 
 resource "null_resource" "download_binaries" {
+
+  depends_on = [
+    null_resource.dependency
+  ]
   provisioner "local-exec" {
     when    = create
     command = <<EOF
 test -e ${local.installer_workspace} || mkdir ${local.installer_workspace}
+rm -rf ${local.installer_workspace}/*
 case $(uname -s) in
   Darwin)
     wget -r -l1 -np -nd -q ${local.openshift_installer_url} -P ${local.installer_workspace} -A 'openshift-install-mac-4*.tar.gz'
@@ -54,6 +49,7 @@ EOF
 
 }
 
+
 resource "null_resource" "generate_manifests" {
   triggers = {
     install_config = data.template_file.install_config_yaml.rendered
@@ -76,12 +72,12 @@ resource "null_resource" "disable_master_scheduling" {
 
   provisioner "local-exec" {
     command = <<EOF
-sed -i -e 's/mastersSchedulable: true/mastersSchedulable: false/' -f ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
+sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
 EOF
   }
 }
 
-resource "null_resource" "generate_ignition_files" {
+resource "null_resource" "generate_ignition" {
   depends_on = [
     null_resource.disable_master_scheduling
   ]
@@ -94,7 +90,7 @@ EOF
 }
 
 resource "null_resource" "inject_network_config_workers" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   count = length(var.worker_ips)
   provisioner "local-exec" {
     command = <<EOF
@@ -104,7 +100,7 @@ EOF
 }
 
 resource "null_resource" "inject_network_config_masters" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   count = length(var.master_ips)
   provisioner "local-exec" {
     command = <<EOF
@@ -113,8 +109,60 @@ EOF
   }
 }
 
+resource "null_resource" "move_kubectl" {
+
+  depends_on = [
+    null_resource.inject_network_config_masters,
+    null_resource.inject_network_config_workers]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
+    source = "${local.installer_workspace}/kubectl"
+    destination = "/usr/local/bin/kubectl"
+  }
+}
+resource "null_resource" "move_oc" {
+
+  depends_on = [
+    null_resource.move_kubectl]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+
+  provisioner "file" {
+    source = "${local.installer_workspace}/oc"
+    destination = "/usr/local/bin/oc"
+  }
+}
+
+resource "null_resource" "move_kubeconfig" {
+
+  depends_on = [
+    null_resource.move_kubectl]
+  connection {
+    type = "ssh"
+    user = var.username
+    private_key = var.ssh_private_key
+    host = var.infra_ip
+  }
+  provisioner "file" {
+    source = "${local.installer_workspace}/auth/kubeconfig"
+    destination = "/opt/kubeconfig"
+  }
+}
+
+
+
 data "local_file" "kubeadmin_password" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeadmin-password"
 }
 
@@ -125,7 +173,7 @@ data "local_file" "master_igns" {
 }
 
 data "local_file" "append_ign" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/append.ign"
 }
 
@@ -136,11 +184,20 @@ data "local_file" "worker_igns" {
 }
 
 data "local_file" "bootstrap_ign" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/bootstrap.ign"
 }
 
 data "local_file" "kubeconfig" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeconfig"
+}
+
+resource "null_resource" "ignition_files_created" {
+  depends_on = [
+    null_resource.move_kubeconfig
+  ]
+  provisioner "local-exec" {
+    command = "echo 'ignition files created'"
+  }
 }
