@@ -72,12 +72,12 @@ resource "null_resource" "disable_master_scheduling" {
 
   provisioner "local-exec" {
     command = <<EOF
-sed -i -e 's/mastersSchedulable: true/mastersSchedulable: false/' -f ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
+sed -i 's/mastersSchedulable: true/mastersSchedulable: false/' ${local.installer_workspace}/manifests/cluster-scheduler-02-config.yml
 EOF
   }
 }
 
-resource "null_resource" "generate_ignition_files" {
+resource "null_resource" "generate_ignition" {
   depends_on = [
     null_resource.disable_master_scheduling
   ]
@@ -90,7 +90,7 @@ EOF
 }
 
 resource "null_resource" "inject_network_config_workers" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   count = length(var.worker_ips)
   provisioner "local-exec" {
     command = <<EOF
@@ -100,7 +100,7 @@ EOF
 }
 
 resource "null_resource" "inject_network_config_masters" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   count = length(var.master_ips)
   provisioner "local-exec" {
     command = <<EOF
@@ -162,7 +162,7 @@ resource "null_resource" "move_kubeconfig" {
 
 
 data "local_file" "kubeadmin_password" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeadmin-password"
 }
 
@@ -173,7 +173,7 @@ data "local_file" "master_igns" {
 }
 
 data "local_file" "append_ign" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/append.ign"
 }
 
@@ -184,12 +184,12 @@ data "local_file" "worker_igns" {
 }
 
 data "local_file" "bootstrap_ign" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/bootstrap.ign"
 }
 
 data "local_file" "kubeconfig" {
-  depends_on = [null_resource.generate_ignition_files]
+  depends_on = [null_resource.generate_ignition]
   filename = "${local.installer_workspace}/auth/kubeconfig"
 }
 
