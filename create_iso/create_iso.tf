@@ -73,12 +73,7 @@ resource "null_resource" "downloadiso" {
       "cp -r /tmp/tempiso/* /tmp/iso/",
       "sudo umount /tmp/tempiso",
       "sudo chmod -R u+w /tmp/iso/",
-      "sed -i 's/default vesamenu.c32/default linux/g' /tmp/iso/isolinux/isolinux.cfg"
-    ]
-  }
-
-  provisioner "remote-exec" {
-    inline = [
+      "sed -i 's/default vesamenu.c32/default linux/g' /tmp/iso/isolinux/isolinux.cfg",
       "curl -sL -o /tmp/govc.gz ${var.binaries["govc"]}",
       "gunzip /tmp/govc.gz",
       "sudo chmod 755 /tmp/govc",
@@ -86,8 +81,6 @@ resource "null_resource" "downloadiso" {
       "chmod +x /usr/local/bin/govc",
       "mkdir /install/",
       "curl -sL -o /install/bios.raw.gz ${var.binaries["openshift_bios"]} "
-
-
     ]
   }
 }

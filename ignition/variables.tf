@@ -1,5 +1,3 @@
-// Basic cluster variables
-
 variable "cluster_name" {
   type = string
 }
@@ -8,29 +6,10 @@ variable "base_domain" {
   type = string
 }
 
-// Network settings
-
 variable "gateway" {
   type = string
 }
 
-variable "dns" {
-  type = list(string)
-}
-
-variable "proxy_host" {
-  type = string
-}
-
-variable "network_prefix" {
-  type = string
-}
-
-variable "no_proxies" {
-  type = list(string)
-}
-
-// Node IPs
 variable "master_ips" {
   type = list(string)
 }
@@ -39,15 +18,14 @@ variable "worker_ips" {
   type = list(string)
 }
 
+variable "dns" {
+  type = list(string)
+}
+
 variable "bootstrap_ip" {
   type = string
 }
 
-variable "infra_ip" {
-  type = string
-}
-
-// OpenShift settings
 variable "public_ssh_key" {
   type = string
 }
@@ -62,11 +40,9 @@ variable "openshift_installer_url" {
 }
 
 variable "openshift_version" {
-  type = string
+  type    = string
 }
 
-
-// vCenter Settings
 variable "vcenter_url" {
   type = string
 }
@@ -85,4 +61,32 @@ variable "datacenter" {
 
 variable "datastore" {
   type = string
+}
+
+variable "infra_ip" {
+  type = string
+}
+
+variable "proxy_host" {
+  type = string
+}
+
+variable "network_prefix" {
+  type = string
+}
+
+variable "no_proxies" {
+  type = list(string)
+}
+variable "ssh_private_key" {
+  type = string
+}
+variable "username" {
+  type        = string
+  description = "User for the Operating System User to access virtual machine"
+}
+
+variable "dependsOn" {
+  type    = list(string)
+  default = []
 }
