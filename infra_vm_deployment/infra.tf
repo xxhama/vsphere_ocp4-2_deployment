@@ -140,13 +140,13 @@ PROXY_URL="http://${var.proxy_server}/"
 export http_proxy="$PROXY_URL"
 export https_proxy="$PROXY_URL"
 export ftp_proxy="$PROXY_URL"
-export no_proxy="127.0.0.1,localhost"
+export no_proxy="127.0.0.1,localhost,*.${var.vm_domain}"
 
 # For curl
 export HTTP_PROXY="$PROXY_URL"
 export HTTPS_PROXY="$PROXY_URL"
 export FTP_PROXY="$PROXY_URL"
-export NO_PROXY="127.0.0.1,localhost"
+export NO_PROXY="127.0.0.1,localhost,*.${var.vm_domain}"
 
 EOF
 
